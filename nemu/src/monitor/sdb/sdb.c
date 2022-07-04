@@ -65,7 +65,7 @@ static int cmd_si(char *args) {
   if(arg == NULL) {
     step = 1;
     printf("arg is NULL\n");
-  } else if(isdigit(arg) && atoi(arg) > 0) {
+  } else if(atoi(arg) > 0) {
     printf("arg is digit\n");
     step = atoi(arg);
   } else printf("error arguments\n");
