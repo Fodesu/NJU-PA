@@ -59,10 +59,12 @@ static struct {
 
 static int cmd_si(char *args) {
 /*                       */
+  Log("success into cmd_si\n");
   char *arg = strtok(NULL, " ");
   int step = 0;
   if(arg == NULL) {
     step = 1;
+    printf("arg is NULL\n");
   } else if(isdigit(arg) && atoi(arg) > 0) {
     step = atoi(arg);
   } else printf("error arguments\n");
