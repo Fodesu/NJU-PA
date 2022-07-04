@@ -68,7 +68,10 @@ static int cmd_si(char *args) {
   } else if(atoi(arg) > 0) {
     printf("arg is digit\n");
     step = atoi(arg);
-  } else printf("error arguments\n");
+  } else {
+    printf("error arguments\n");
+    return 0;
+  }
   cpu_exec(step);
   return 0;
 }
