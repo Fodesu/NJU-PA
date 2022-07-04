@@ -34,7 +34,9 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
-  Log("nemu_state.state\nnemu_state.halt_ret\nnemu_state.state");
+  Log("%d", nemu_state.state);
+  Log("%d", nemu_state.halt_ret);
+  Log("%d", nemu_state.state);
   return -1;
 }
 
