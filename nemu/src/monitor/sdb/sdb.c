@@ -34,7 +34,7 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
-  nemu_state.state = NEMU_QUIT;
+  Log("nemu_state.state\nnemu_state.halt_ret\nnemu_state.state");
   return -1;
 }
 
