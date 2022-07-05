@@ -3,6 +3,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -64,6 +65,50 @@ static struct {
 #define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_x(char *args) {
+  char *num = NULL;
+  char *address = NULL;
+  num = strtok(NULL, " ");
+  if(num == NULL || atoi(num) <= 0) {
+    printf("Error Input\n");
+    return 0;
+  } 
+  address = strtok(NULL, " ");
+  if(address == NULL || strncmp(address, "0x", 2) != 0 ||
+   strtok(NULL, " ") == NULL || strlen(address) < 3) {
+    printf("Error Input\n");
+    return 0;
+  }
+  paddr_t addr = 0;
+  for(int i = 2; i < strlen(address); i++) {
+    if(address[i] <= '9' && address[i] >= '0') {
+      addr = addr * 16 + address[i] - '0';
+    }
+    else switch(address[i]){
+      case 'A' : case 'a':
+        addr = addr * 16 + 10;
+        break;
+      case 'B' : case 'b' :
+        addr = addr * 16 + 11;
+        break;
+      case 'C' : case 'c' :
+        addr = addr * 16 + 12;
+        break;
+      case 'D' : case 'd' :
+        addr = addr * 16 + 13;
+        break;
+      case 'E' : case 'e' :
+        addr = addr * 16 + 14;
+        break;
+      case 'F' : case 'f' :
+        addr = addr * 16 + 15;
+        break;
+    }
+  }
+  int nums = atoi(num);
+  for(int i = 0; i < nums; i++) {
+    printf("%x\n", vaddr_read(addr, 4));
+    addr += 4;
+  }
   return 0;
 }
 
