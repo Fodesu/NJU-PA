@@ -42,6 +42,9 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
+static int cmd_info(char *args);
+
+
 static struct {
   const char *name;
   const char *description;
@@ -50,26 +53,40 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "step into", cmd_si},
+  { "si", "step num seconds", cmd_si},
+  { "info", "information for Register or watchpoint", cmd_info},
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
+static int cmd_info(char *args) {
+  char *arg = strtok(NULL, " ");
+  char *r = "r", *w = "w";
+  if(arg == NULL) {
+    printf("Error input\n");
+  } else if(arg == r) {
+    isa_reg_display();
+  } else if(arg == w) {
+    TODO();
+  }
+  return 0;
+}
+
 static int cmd_si(char *args) {
-/*                       */
-  Log("success into cmd_si\n");
+/*                       */ 
+ //  Log("success into cmd_si");
   char *arg = strtok(NULL, " ");
   int step = 0;
   if(arg == NULL) {
     step = 1;
-    printf("arg is NULL\n");
+  //  printf("arg is NULL\n");
   } else if(atoi(arg) > 0) {
-    printf("arg is digit\n");
+  //  printf("arg is digit\n");
     step = atoi(arg);
   } else {
-    printf("error arguments\n");
+    printf("Error arguments\n");
     return 0;
   }
   cpu_exec(step);
