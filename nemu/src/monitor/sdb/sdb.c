@@ -75,7 +75,10 @@ static int cmd_x(char *args) {
   address = strtok(NULL, " ");
   if(address == NULL || strncmp(address, "0x", 2) != 0 ||
    strtok(NULL, " ") == NULL || strlen(address) < 3) {
-    printf("Error Input 2\n");
+    if(address == NULL) printf("Error Input 2\n");
+    if(strlen(address) < 4) printf("Error Input 5\n");
+    if(strncmp(address, "0x", 2) != 0) printf("Error Input 3\n");
+    else printf("Error Input 4\n");
     return 0;
   }
   paddr_t addr = 0;
