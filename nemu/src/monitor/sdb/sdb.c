@@ -109,7 +109,7 @@ static int cmd_x(char *args) {
   }
   int nums = atoi(num);
   for(int i = 0; i < nums; i++) {
-    printf("%x\n", vaddr_read(addr, 4));
+    printf("0x%x\n", vaddr_read(addr, 4));
     addr += 4;
   }
   return 0;
