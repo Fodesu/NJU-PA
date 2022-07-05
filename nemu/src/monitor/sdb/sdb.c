@@ -62,6 +62,7 @@ static struct {
 #define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_info(char *args) {
+  Log("into cmd_info");
   char *arg = strtok(NULL, " ");
   char *r = "r", *w = "w";
   if(arg == NULL) {
