@@ -44,6 +44,7 @@ static int cmd_si(char *args);
 
 static int cmd_info(char *args);
 
+static int cmd_x(char *args);
 
 static struct {
   const char *name;
@@ -55,11 +56,16 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "step num seconds", cmd_si},
   { "info", "information for Register or watchpoint", cmd_info},
+  {"x", "read memory by virtual address", cmd_x},
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+
+static int cmd_x(char *args) {
+  return 0;
+}
 
 static int cmd_info(char *args) {
   char *arg = strtok(NULL, " ");
