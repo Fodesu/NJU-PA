@@ -69,13 +69,13 @@ static int cmd_x(char *args) {
   char *address = NULL;
   num = strtok(NULL, " ");
   if(num == NULL || atoi(num) <= 0) {
-    printf("Error Input\n");
+    printf("Error Input 1\n");
     return 0;
   } 
   address = strtok(NULL, " ");
   if(address == NULL || strncmp(address, "0x", 2) != 0 ||
    strtok(NULL, " ") == NULL || strlen(address) < 3) {
-    printf("Error Input\n");
+    printf("Error Input 2\n");
     return 0;
   }
   paddr_t addr = 0;
