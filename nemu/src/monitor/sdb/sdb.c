@@ -65,6 +65,7 @@ static int cmd_info(char *args) {
   Log("into cmd_info");
   char *arg = strtok(NULL, " ");
   char *r = "r", *w = "w";
+  printf("%s\n", arg);
   if(arg == NULL) {
     printf("Error input\n");
   } else if(arg == r) {
