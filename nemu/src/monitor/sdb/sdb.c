@@ -69,7 +69,7 @@ static int cmd_x(char *args) {
 
 static int cmd_info(char *args) {
   char *arg = strtok(NULL, " ");
-  if(arg == NULL) {
+  if(arg == NULL || strtok(NULL, " ") != NULL) {
     printf("Error input\n");
   } else if(strcmp(arg, "r") == 0) {
     isa_reg_display();
