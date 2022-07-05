@@ -84,6 +84,10 @@ static int cmd_si(char *args) {
  //  Log("success into cmd_si");
   char *arg = strtok(NULL, " ");
   int step = 0;
+  if(strtok(NULL, " ") != NULL) {
+    printf("Error input\n");
+    return 0;
+  }
   if(arg == NULL) {
     step = 1;
   //  printf("arg is NULL\n");
