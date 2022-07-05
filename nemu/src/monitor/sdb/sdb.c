@@ -67,8 +67,10 @@ static int cmd_info(char *args) {
   if(arg == NULL) {
     printf("Error input\n");
   } else if(arg == r) {
+    Log("into r");
     isa_reg_display();
   } else if(arg == w) {
+    Log("into w");
     TODO();
   }
   return 0;
