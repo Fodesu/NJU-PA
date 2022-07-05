@@ -62,17 +62,12 @@ static struct {
 #define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_info(char *args) {
-  Log("into cmd_info");
   char *arg = strtok(NULL, " ");
-  char *r = "r", *w = "w";
-  printf("%s\n", arg);
   if(arg == NULL) {
     printf("Error input\n");
-  } else if(arg == r) {
-    Log("into r");
+  } else if(strcmp(arg, "r") == 0) {
     isa_reg_display();
-  } else if(arg == w) {
-    Log("into w");
+  } else if(strcmp(arg, "w") == 0) {
     TODO();
   }
   return 0;
