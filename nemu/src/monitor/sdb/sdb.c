@@ -71,7 +71,7 @@ static int cmd_p(char *args) {
   if(args == NULL) {
     printf("No Arguments\n");
   }
-  printf("%s", args);
+  printf("%s\n", args);
   bool *success = NULL; 
   expr(args, success);
   if(*success == false) Log("get val of expr is Error\n");
