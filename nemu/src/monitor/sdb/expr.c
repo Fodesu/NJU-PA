@@ -156,6 +156,7 @@ static bool check_parentheses(int p, int q) {
 
 
 uint32_t Find_Oper(int p, int q) {
+  printf("find in bound p ~~ q\n");
   int cnt = 0;
   for(int i = q; i >= p; i--) {
     if(tokens[i].type == TK_RPARE) 
