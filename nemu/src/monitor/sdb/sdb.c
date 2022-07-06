@@ -47,6 +47,8 @@ static int cmd_info(char *args);
 
 static int cmd_x(char *args);
 
+// static int cmd_p(char *args);
+
 static struct {
   const char *name;
   const char *description;
@@ -58,6 +60,7 @@ static struct {
   { "si", "step num seconds", cmd_si},
   { "info", "information for Register or watchpoint", cmd_info},
   {"x", "read memory by virtual address", cmd_x},
+  // {"p", "print val of expr", cmd_p},
   /* TODO: Add more commands */
 
 };
