@@ -159,6 +159,7 @@ uint32_t Find_Oper(int p, int q) {
   printf("find in bound p ~~ q\n");
   int cnt = 0;
   for(int i = q; i >= p; i--) {
+    printf("%c", tokens[i].type);
     if(tokens[i].type == TK_RPARE) 
       cnt++;
     else if(tokens[i].type == TK_LPARE) 
