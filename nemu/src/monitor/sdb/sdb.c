@@ -47,7 +47,7 @@ static int cmd_info(char *args);
 
 static int cmd_x(char *args);
 
-// static int cmd_p(char *args);
+static int cmd_p(char *args);
 
 static struct {
   const char *name;
@@ -60,12 +60,22 @@ static struct {
   { "si", "step num seconds", cmd_si},
   { "info", "information for Register or watchpoint", cmd_info},
   {"x", "read memory by virtual address", cmd_x},
-  // {"p", "print val of expr", cmd_p},
+  {"p", "print val of expr", cmd_p},
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+
+static int cmd_p(char *args) {
+  if(args == NULL) {
+    printf("No Arguments\n");
+  }
+  bool *success = NULL; 
+  expr(args, success);
+  if(*success == false) Log("get val of expr is Error\n");
+  return 0;
+}
 
 static int cmd_x(char *args) {
   char *num = NULL;
