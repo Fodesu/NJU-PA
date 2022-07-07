@@ -112,6 +112,7 @@ static bool make_token(char *e) {
                   token->type = TK_DIGITAL;
                   if(substr_len < 32){
                          strncpy(token->str, substr_start, substr_len);
+                         printf("%s", token->str);
                          // token->str[sizeof(token->str) - 1] = '\0';
                   } else {
                           printf("number too long\n");
