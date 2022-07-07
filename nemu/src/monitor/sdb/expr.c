@@ -228,7 +228,7 @@ word_t expr(char *e, bool *success) {
   // for(int i = 0; i <= p; i++) {
   //   printf("%s, ", tokens[i].str);
   // }
-  printf("\n");
+  // printf("\n");
   return eval(0, p, success);  
   return 0;
 }
