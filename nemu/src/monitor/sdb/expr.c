@@ -124,7 +124,8 @@ static bool make_token(char *e) {
             tokens[nr_token++].type = ',';
             break;
         }
-        Log("%c\n", tokens[nr_token-1].type);
+        
+        Log("%c  %s\n", tokens[nr_token-1].type, tokens[nr_token-1].str);
         break;
       }
     }
