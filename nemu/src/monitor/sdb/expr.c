@@ -91,28 +91,27 @@ static bool make_token(char *e) {
         Token *token = malloc(sizeof(Token));
         switch (rules[i].token_type) {
           case TK_PLUS :
-                  token->type = TK_PLUS;
+                  token->type = '+';
                   break;
           case TK_SUB :
-                  token->type = TK_SUB;
+                  token->type = '-';
                   break;
           case TK_MULTI :
-                  token->type = TK_MULTI;       
+                  token->type = '*';       
                   break;
           case TK_DIVI :
-                  token->type = TK_DIVI;
+                  token->type = '/';
                   break;
           case TK_LPARE :
-                  token->type = TK_LPARE;
+                  token->type = '(';
                   break;
           case TK_RPARE :
-                  token->type = TK_RPARE;
+                  token->type = ')';
                   break;
           case TK_DIGITAL :
                   token->type = TK_DIGITAL;
                   if(substr_len < 32){
                          strncpy(token->str, substr_start, substr_len);
-                         printf("%s", token->str);
                          // token->str[sizeof(token->str) - 1] = '\0';
                   } else {
                           printf("number too long\n");
