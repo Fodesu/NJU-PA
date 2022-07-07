@@ -88,39 +88,35 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-        Token *token = malloc(sizeof(Token));
         switch (rules[i].token_type) {
           case TK_PLUS :
-                  token->type = TK_PLUS;
+                  tokens[nr_token].type = TK_PLUS;
                   break;
           case TK_SUB :
-                  token->type = TK_SUB;
+                  tokens[nr_token].type = TK_SUB;
                   break;
           case TK_MULTI :
-                  token->type = TK_MULTI;       
+                  tokens[nr_token].type = TK_MULTI;
                   break;
           case TK_DIVI :
-                  token->type = TK_DIVI;
+                  tokens[nr_token].type = TK_DIVI;
                   break;
           case TK_LPARE :
-                  token->type = TK_LPARE;
+                  tokens[nr_token].type = TK_LPARE;
                   break;
           case TK_RPARE :
-                  token->type = TK_RPARE;
+                  tokens[nr_token].type = TK_RPARE;
                   break;
           case TK_DIGITAL :
-                  token->type = TK_DIGITAL;
+                  tokens[nr_token].type = TK_DIGITAL;
                   if(substr_len < 32){
-                         strncpy(token->str, substr_start, substr_len);
-                         token->str[sizeof(token->str) - 1] = '\0';
+                         strncpy(tokens[nr_token].str, substr_start, substr_len);  
+                         printf("%s", tokens[nr_token].str);
                   } else {
                           printf("number too long\n");
                   }
                   break;
         }
-        tokens[nr_token] = *token;
-        nr_token++;
-        
         // Log("%c  %s\n", tokens[nr_token-1].type, tokens[nr_token-1].str);
         break;
       }
