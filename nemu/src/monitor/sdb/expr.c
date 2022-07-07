@@ -91,37 +91,44 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_PLUS :
                   printf("%d\n", nr_token);
-                  tokens[nr_token++].type = TK_PLUS;
+                  tokens[nr_token].type = TK_PLUS;
+                  nr_token++;
                   break;
           case TK_SUB :
                   printf("%d\n", nr_token);
-                  tokens[nr_token++].type = TK_SUB;
+                  tokens[nr_token].type = TK_SUB;
+                  nr_token++;
                   break;
           case TK_MULTI :
                   printf("%d\n", nr_token);
-                  tokens[nr_token++].type = TK_MULTI;
+                  tokens[nr_token].type = TK_MULTI;
+                  nr_token++;
                   break;
           case TK_DIVI :
                   printf("%d\n", nr_token);
-                  tokens[nr_token++].type = TK_DIVI;
+                  tokens[nr_token].type = TK_DIVI;
+                  nr_token++;
                   break;
           case TK_LPARE :
                   printf("%d\n", nr_token);
-                  tokens[nr_token++].type = TK_LPARE;
+                  tokens[nr_token].type = TK_LPARE;
+                  nr_token++;
                   break;
           case TK_RPARE :
                   printf("%d\n", nr_token);
-                  tokens[nr_token++].type = TK_RPARE;
+                  tokens[nr_token].type = TK_RPARE;
+                  nr_token++;
                   break;
           case TK_DIGITAL :
                   printf("%d\n", nr_token);
-                  tokens[nr_token++].type = TK_DIGITAL;
+                  tokens[nr_token].type = TK_DIGITAL;
                   if(substr_len < 32){
                          strncpy(tokens[nr_token].str, substr_start, substr_len);  
                          // printf("%s\n", tokens[nr_token].str);
                   } else {
                           printf("number too long\n");
                   }
+                  nr_token++;
                   break;
         }
         // Log("%c  %s\n", tokens[nr_token-1].type, tokens[nr_token-1].str);
@@ -215,7 +222,7 @@ word_t expr(char *e, bool *success) {
   int p = 31;
   while(tokens[p].type == 0) p--;
   /* TODO: Insert codes to evaluate the expression. */
-  for(int i = 1; i <= p + 1; i++) {
+  for(int i = 0; i <= p + 1; i++) {
     printf("%s, ", tokens[i].str);
   }
   printf("\n");
