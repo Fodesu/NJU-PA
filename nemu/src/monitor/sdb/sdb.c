@@ -70,6 +70,7 @@ static struct {
 static int cmd_p(char *args) {
   if(args == NULL) {
     printf("No Arguments\n");
+    return 0;
   }
   printf("%s\n", args);
   bool *success = NULL; 
