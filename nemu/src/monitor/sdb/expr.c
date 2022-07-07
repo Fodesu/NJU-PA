@@ -156,7 +156,7 @@ static bool check_parentheses(int p, int q) {
 
 
 uint32_t Find_Oper(int p, int q) {
-  printf("find in bound p ~~ q\n");
+  printf("find in bound %d ~~ %d\n", p, q);
   int cnt = 0;
   for(int i = q; i >= p; i--) {
     printf("%c\n", tokens[i].type);
