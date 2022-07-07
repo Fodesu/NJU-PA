@@ -173,7 +173,7 @@ uint32_t Find_Oper(int p, int q) {
 }
  
 uint32_t eval(int p, int q, bool* success) {
-  printf("in the %d ~ %d", p, q);
+  printf("in the %d ~ %d\n", p, q);
   if (p > q) {
     *success = false; 
     printf("Bad Range\n");
