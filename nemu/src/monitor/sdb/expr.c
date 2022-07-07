@@ -182,7 +182,7 @@ uint32_t Find_Oper(int p, int q) {
  
 
 uint32_t eval(int p, int q, bool* success) {
-  // printf("in the %d ~ %d\n", p, q);
+  printf("in the %d ~ %d\n", p, q);
   if (p > q) {
     *success = false; 
     printf("Bad Range\n");
@@ -203,10 +203,10 @@ uint32_t eval(int p, int q, bool* success) {
     if(op == -1) success = false;
     uint32_t val1 = eval(p, op - 1, success);
     uint32_t val2 = eval(op + 1, q, success);
-    // printf("%d   %d\n", val1, val2);
-    // printf("%d   %d\n", op, tokens[op].type);
-    // if(*success == 1) printf("true\n");
-    // else printf("Error\n");
+    printf("%d   %d\n", val1, val2);
+    printf("%d   %d\n", op, tokens[op].type);
+    if(*success == 1) printf("true\n");
+    else printf("Error\n");
     switch (tokens[op].type) {
       case TK_PLUS: return val1 + val2;
       case TK_SUB: return val1 - val2;
