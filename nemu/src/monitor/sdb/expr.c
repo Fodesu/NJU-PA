@@ -104,6 +104,7 @@ static bool make_token(char *e) {
           case TK_DIGITAL :
             tokens[nr_token++].type = TK_DIGITAL;
             strncpy(tokens->str, substr_start, substr_len);
+            tokens[nr_token].str[sizeof(tokens->str) - 1] = '\0';
             break;
           case TK_SUB :
             tokens[nr_token++].type = '-';
