@@ -77,7 +77,7 @@ static int cmd_p(char *args) {
   *success = true; 
   int ans = expr(args, success);
   if(*success == false) Log("get val of expr is Error\n");
-  else printf("Ans is %d", ans);
+  else printf("Ans is %d\n", ans);
   free(success);
   return 0;
 }

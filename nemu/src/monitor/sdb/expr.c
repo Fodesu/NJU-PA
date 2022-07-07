@@ -189,7 +189,7 @@ uint32_t eval(int p, int q, bool* success) {
     return 0;
   }
   else if (p == q) {
-    printf("%s\n", tokens[p].str);
+    // printf("%s\n", tokens[p].str);
     return atoi(tokens[p].str);
   }
   else if (check_parentheses(p, q) == true) {
@@ -205,8 +205,8 @@ uint32_t eval(int p, int q, bool* success) {
     uint32_t val2 = eval(op + 1, q, success);
     printf("%d   %d\n", val1, val2);
     printf("%d   %d\n", op, tokens[op].type);
-    if(*success == 1) printf("true\n");
-    else printf("Error\n");
+    // if(*success == 1) printf("true\n");
+    // else printf("Error\n");
     switch (tokens[op].type) {
       case TK_PLUS: return val1 + val2;
       case TK_SUB: return val1 - val2;
@@ -225,9 +225,9 @@ word_t expr(char *e, bool *success) {
   int p = 31;
   while(tokens[p].type == 0) p--;
   /* TODO: Insert codes to evaluate the expression. */
-  for(int i = 0; i <= p; i++) {
-    printf("%s, ", tokens[i].str);
-  }
+  // for(int i = 0; i <= p; i++) {
+  //   printf("%s, ", tokens[i].str);
+  // }
   printf("\n");
   return eval(0, p, success);  
   return 0;
