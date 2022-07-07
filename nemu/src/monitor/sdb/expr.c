@@ -211,7 +211,7 @@ word_t expr(char *e, bool *success) {
   int p = 31;
   while(tokens[p].type == 0) p--;
   /* TODO: Insert codes to evaluate the expression. */
-  printf("find begin in the %d", p);
+  printf("find begin in the %d\n", p);
   return eval(0, p, success);  
   return 0;
 }
