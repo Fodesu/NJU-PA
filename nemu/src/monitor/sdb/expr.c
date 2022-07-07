@@ -224,11 +224,11 @@ word_t expr(char *e, bool *success) {
   }
   int p = 31;
   while(tokens[p].type == 0) p--;
-  /* TODO: Insert codes to evaluate the expression. */
-  // for(int i = 0; i <= p; i++) {
-  //   printf("%s, ", tokens[i].str);
-  // }
-  // printf("\n");
+/* TODO: Insert codes to evaluate the expression. */
+  for(int i = 0; i <= p; i++) {
+    printf("%s, ", tokens[i].str);
+  }
+  printf("\n");
   return eval(0, p, success);  
   return 0;
 }
