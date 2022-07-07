@@ -123,7 +123,6 @@ static bool make_token(char *e) {
                           printf("number too long\n");
                   }
                   break;
-          default: TODO();
         }
         tokens[nr_token] = *token;
         nr_token++;
