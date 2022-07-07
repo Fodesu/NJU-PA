@@ -111,13 +111,12 @@ static bool make_token(char *e) {
                   tokens[nr_token++].type = TK_DIGITAL;
                   if(substr_len < 32){
                          strncpy(tokens[nr_token].str, substr_start, substr_len);  
-                        //  printf("%s\n", tokens[nr_token].str);
+                         printf("%s\n", tokens[nr_token].str);
                   } else {
                           printf("number too long\n");
                   }
                   break;
         }
-        printf("%s\n", tokens[nr_token].str);
         // Log("%c  %s\n", tokens[nr_token-1].type, tokens[nr_token-1].str);
         break;
       }
@@ -209,7 +208,7 @@ word_t expr(char *e, bool *success) {
   int p = 31;
   while(tokens[p].type == 0) p--;
   /* TODO: Insert codes to evaluate the expression. */
-  for(int i = 0; i <= p; i++) {
+  for(int i = 0; i <= 10; i++) {
     printf("%s  ,", tokens[i].str);
   }
   printf("\n");
