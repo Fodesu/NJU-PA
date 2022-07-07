@@ -201,6 +201,7 @@ uint32_t eval(int p, int q, bool* success) {
   else {
     int op = Find_Oper(p, q);
     if(op == -1) success = false;
+    printf("%d   %d\n", op, tokens[op].type);
     uint32_t val1 = eval(p, op - 1, success);
     uint32_t val2 = eval(op + 1, q, success);
     printf("%d   %d\n", val1, val2);
