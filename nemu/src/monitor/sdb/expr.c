@@ -26,7 +26,7 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
   {"^(-[0-9]|[0-9])[0-9]*", TK_DIGITAL},
-  {"-", '-'},
+  {"\\-", '-'},
   {"\\*", '*'},
   {"\\/", '/'},
   {"\\(", TK_LPARE},
@@ -211,6 +211,6 @@ word_t expr(char *e, bool *success) {
   int p = 31;
   while(tokens[p].type == 0) p--;
   /* TODO: Insert codes to evaluate the expression. */
-  return eval(1, p, success);  
+  return eval(0, p, success);  
   return 0;
 }
