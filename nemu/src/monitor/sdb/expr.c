@@ -165,7 +165,7 @@ static bool check_parentheses(int p, int q) {
 
 uint32_t Find_Oper(int p, int q) {
   printf("finding op in the bound %d ~~ %d\n", p, q);
-  int cnt = 0;
+  int cnt = 0, pi = -1, MINN = 3;
   for(int i = q; i >= p; i--) {
     printf("%c\n", tokens[i].type);
     if(tokens[i].type == TK_RPARE) 
@@ -173,10 +173,16 @@ uint32_t Find_Oper(int p, int q) {
     else if(tokens[i].type == TK_LPARE) 
       cnt--;
     if(cnt < 0) return -1;
-    if(cnt == 0 && (tokens[i].type == TK_PLUS || tokens[i].type == TK_SUB 
-    || tokens[i].type == TK_MULTI || tokens[i].type == TK_DIVI))
-      return i;
+    if(cnt == 0 && MINN > 1 && (tokens[i].type == TK_PLUS || tokens[i].type == TK_SUB)){
+      MINN = 1;
+      pi = i;
+    }
+    if(cnt == 0 && MINN == 3 && (tokens[i].type == TK_MULTI || tokens[i].type == TK_DIVI)){
+      MINN = 2;
+      pi = i;
+    }
   }
+  if(pi != -1) return pi;
   Assert(0, "cannot find main operation");
 }
  
