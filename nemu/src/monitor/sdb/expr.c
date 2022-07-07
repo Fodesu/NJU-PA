@@ -92,27 +92,21 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_PLUS :
                   token->type = TK_PLUS;
-                  strcpy(token->str, "+");
                   break;
           case TK_SUB :
                   token->type = TK_SUB;
-                  strcpy(token->str, "-");
                   break;
           case TK_MULTI :
-                  token->type = TK_MULTI;
-                  strcpy(token->str, "*");        
+                  token->type = TK_MULTI;       
                   break;
           case TK_DIVI :
                   token->type = TK_DIVI;
-                  strcpy(token->str, "/");
                   break;
           case TK_LPARE :
                   token->type = TK_LPARE;
-                  strcpy(token->str, "(");
                   break;
           case TK_RPARE :
                   token->type = TK_RPARE;
-                  strcpy(token->str,")");
                   break;
           case TK_DIGITAL :
                   token->type = TK_DIGITAL;
