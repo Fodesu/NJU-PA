@@ -87,46 +87,48 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-        if(substr_len > 32) {
-          Log("Size is exceed 32 Cannot insert substr to array");
-          assert(0);
-        }
+
+        Token *token = malloc(sizeof(Token));
         switch (rules[i].token_type) {
-          case TK_NOTYPE : 
-            // tokens[nr_token++].type =  TK_NOTYPE;
-            break;
           case TK_PLUS :
-            tokens[nr_token++].type = '+';
-            break;
-          case TK_EQ :
-            tokens[nr_token++].type = TK_EQ;
-            break;
-          case TK_DIGITAL :
-            tokens[nr_token++].type = TK_DIGITAL;
-            strncpy(tokens->str, substr_start, substr_len);
-            tokens[nr_token].str[sizeof(tokens->str) - 1] = '\0';
-            break;
+                  token->type = TK_PLUS;
+                  strcpy(token->str, "+");
+                  break;
           case TK_SUB :
-            tokens[nr_token++].type = '-';
-            break;
-          case TK_MULTI : 
-            tokens[nr_token++].type = '*';
-            break;
-          case TK_DIVI : 
-            tokens[nr_token++].type = '/';
-            break;
-          case TK_LPARE : 
-            tokens[nr_token++].type = '(';
-            break;
-          case TK_RPARE : 
-            tokens[nr_token++].type = ')';
-            break;
-          case TK_COMMA :
-            tokens[nr_token++].type = ',';
-            break;
+                  token->type = TK_SUB;
+                  strcpy(token->str, "-");
+                  break;
+          case TK_MULTI :
+                  token->type = TK_MULTI;
+                  strcpy(token->str, "*");        
+                  break;
+          case TK_DIVI :
+                  token->type = TK_DIVI;
+                  strcpy(token->str, "/");
+                  break;
+          case TK_LPARE :
+                  token->type = TK_LPARE;
+                  strcpy(token->str, "(");
+                  break;
+          case TK_RPARE :
+                  token->type = TK_RPARE;
+                  strcpy(token->str,")");
+                  break;
+          case TK_DIGITAL :
+                  token->type = TK_DIGITAL;
+                  if(substr_len < 32){
+                         strncpy(token->str, substr_start, substr_len);
+                         token->str[sizeof(token->str) - 1] = '\0';
+                  } else {
+                          printf("number too long\n");
+                  }
+                  break;
+          default: TODO();
         }
+        tokens[nr_token] = *token;
+        nr_token++;
         
-        Log("%c  %s\n", tokens[nr_token-1].type, tokens[nr_token-1].str);
+        // Log("%c  %s\n", tokens[nr_token-1].type, tokens[nr_token-1].str);
         break;
       }
     }
