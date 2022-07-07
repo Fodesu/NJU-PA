@@ -90,24 +90,31 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case TK_PLUS :
+                  printf("%d\n", nr_token);
                   tokens[nr_token++].type = TK_PLUS;
                   break;
           case TK_SUB :
+                  printf("%d\n", nr_token);
                   tokens[nr_token++].type = TK_SUB;
                   break;
           case TK_MULTI :
+                  printf("%d\n", nr_token);
                   tokens[nr_token++].type = TK_MULTI;
                   break;
           case TK_DIVI :
+                  printf("%d\n", nr_token);
                   tokens[nr_token++].type = TK_DIVI;
                   break;
           case TK_LPARE :
+                  printf("%d\n", nr_token);
                   tokens[nr_token++].type = TK_LPARE;
                   break;
           case TK_RPARE :
+                  printf("%d\n", nr_token);
                   tokens[nr_token++].type = TK_RPARE;
                   break;
           case TK_DIGITAL :
+                  printf("%d\n", nr_token);
                   tokens[nr_token++].type = TK_DIGITAL;
                   if(substr_len < 32){
                          strncpy(tokens[nr_token].str, substr_start, substr_len);  
