@@ -75,8 +75,9 @@ static int cmd_p(char *args) {
   printf("%s\n", args);
   bool *success = malloc(sizeof(int));
   *success = true; 
-  expr(args, success);
+  int ans = expr(args, success);
   if(*success == false) Log("get val of expr is Error\n");
+  else printf("Ans is %d", ans);
   free(success);
   return 0;
 }
