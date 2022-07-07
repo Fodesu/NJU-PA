@@ -8,7 +8,7 @@
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_DIGITAL,
   TK_LPARE, TK_RPARE,TK_COMMA, TK_PLUS, 
-  TK_SUB, TK_DIVI, TK_MULIT,
+  TK_SUB, TK_DIVI, TK_MULTI,
 
   /* TODO: Add more token types */
 
@@ -28,7 +28,7 @@ static struct rule {
   {"==", TK_EQ},        // equal
   {"^(-[0-9]|[0-9])[0-9]*", TK_DIGITAL},
   {"\\-", TK_SUB},
-  {"\\*", TK_MULIT},
+  {"\\*", TK_MULTI},
   {"\\/", TK_DIVI},
   {"\\(", TK_LPARE},
   {"\\)", TK_RPARE},
@@ -95,7 +95,7 @@ static bool make_token(char *e) {
           case TK_NOTYPE : 
             // tokens[nr_token++].type =  TK_NOTYPE;
             break;
-          case '+' :
+          case TK_PLUS :
             tokens[nr_token++].type = '+';
             break;
           case TK_EQ :
@@ -105,23 +105,23 @@ static bool make_token(char *e) {
             tokens[nr_token++].type = TK_DIGITAL;
             strncpy(tokens->str, substr_start, substr_len);
             break;
-          case '-' :
+          case TK_SUB :
             tokens[nr_token++].type = '-';
             break;
-          case '*' : 
+          case TK_MULTI : 
             tokens[nr_token++].type = '*';
             break;
-          case '/' : 
+          case TK_DIVI : 
             tokens[nr_token++].type = '/';
             break;
           case TK_LPARE : 
-            tokens[nr_token++].type = TK_LPARE;
+            tokens[nr_token++].type = '(';
             break;
           case TK_RPARE : 
-            tokens[nr_token++].type = TK_RPARE;
+            tokens[nr_token++].type = ')';
             break;
           case TK_COMMA :
-            tokens[nr_token++].type = TK_COMMA;
+            tokens[nr_token++].type = ',';
             break;
         }
 
