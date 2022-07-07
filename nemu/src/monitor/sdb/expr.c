@@ -90,37 +90,37 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case TK_PLUS :
-                  printf("%d\n", nr_token);
+                  // printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_PLUS;
                   nr_token++;
                   break;
           case TK_SUB :
-                  printf("%d\n", nr_token);
+                  // printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_SUB;
                   nr_token++;
                   break;
           case TK_MULTI :
-                  printf("%d\n", nr_token);
+                  // printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_MULTI;
                   nr_token++;
                   break;
           case TK_DIVI :
-                  printf("%d\n", nr_token);
+                  // printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_DIVI;
                   nr_token++;
                   break;
           case TK_LPARE :
-                  printf("%d\n", nr_token);
+                  // printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_LPARE;
                   nr_token++;
                   break;
           case TK_RPARE :
-                  printf("%d\n", nr_token);
+                  // printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_RPARE;
                   nr_token++;
                   break;
           case TK_DIGITAL :
-                  printf("%d\n", nr_token);
+                  // printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_DIGITAL;
                   if(substr_len < 32){
                          strncpy(tokens[nr_token].str, substr_start, substr_len);  
@@ -164,7 +164,7 @@ static bool check_parentheses(int p, int q) {
 
 
 uint32_t Find_Oper(int p, int q) {
-  printf("find in the bound %d ~~ %d\n", p, q);
+  // printf("find in the bound %d ~~ %d\n", p, q);
   int cnt = 0;
   for(int i = q; i >= p; i--) {
     printf("%c\n", tokens[i].type);
@@ -182,7 +182,7 @@ uint32_t Find_Oper(int p, int q) {
  
 
 uint32_t eval(int p, int q, bool* success) {
-  printf("in the %d ~ %d\n", p, q);
+  // printf("in the %d ~ %d\n", p, q);
   if (p > q) {
     *success = false; 
     printf("Bad Range\n");
@@ -203,8 +203,8 @@ uint32_t eval(int p, int q, bool* success) {
     if(op == -1) success = false;
     uint32_t val1 = eval(p, op - 1, success);
     uint32_t val2 = eval(op + 1, q, success);
-    printf("%d   %d\n", val1, val2);
-    printf("%d   %d\n", op, tokens[op].type);
+    // printf("%d   %d\n", val1, val2);
+    // printf("%d   %d\n", op, tokens[op].type);
     // if(*success == 1) printf("true\n");
     // else printf("Error\n");
     switch (tokens[op].type) {
