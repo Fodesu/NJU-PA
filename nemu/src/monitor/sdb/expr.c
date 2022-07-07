@@ -208,7 +208,7 @@ word_t expr(char *e, bool *success) {
   int p = 31;
   while(tokens[p].type == 0) p--;
   /* TODO: Insert codes to evaluate the expression. */
-  for(int i = 0; i <= 10; i++) {
+  for(int i = 1; i <= p; i++) {
     printf("%s, ", tokens[i].str);
   }
   printf("\n");
