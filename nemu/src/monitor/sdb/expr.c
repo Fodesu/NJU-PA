@@ -173,8 +173,8 @@ uint32_t Find_Oper(int p, int q) {
     else if(tokens[i].type == TK_LPARE) 
       cnt--;
     if(cnt != 0) return -1;
-    if(cnt == 0 && (tokens[i].type == '+' || tokens[i].type == '-' 
-    || tokens[i].type == '*' || tokens[i].type == '/'))
+    if(cnt == 0 && (tokens[i].type == TK_PLUS || tokens[i].type == TK_SUB 
+    || tokens[i].type == TK_MULTI || tokens[i].type == TK_DIVI))
       return i;
   }
   Assert(0, "cannot find main operation");
