@@ -173,6 +173,7 @@ uint32_t Find_Oper(int p, int q) {
 }
  
 uint32_t eval(int p, int q, bool* success) {
+  printf("in the %d ~ %d", p, q);
   if (p > q) {
     *success = false; 
     printf("Bad Range\n");
@@ -211,7 +212,6 @@ word_t expr(char *e, bool *success) {
   int p = 31;
   while(tokens[p].type == 0) p--;
   /* TODO: Insert codes to evaluate the expression. */
-  printf("find begin in the %d\n", p);
   return eval(0, p, success);  
   return 0;
 }
