@@ -7,7 +7,8 @@
 
 enum {
   TK_NOTYPE = 256, TK_EQ, TK_DIGITAL,
-  TK_LPARE, TK_RPARE,TK_COMMA,
+  TK_LPARE, TK_RPARE,TK_COMMA, TK_PLUS, 
+  TK_SUB, TK_DIVI, TK_MULIT,
 
   /* TODO: Add more token types */
 
@@ -23,12 +24,12 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
+  {"\\+", TK_PLUS},         // plus
   {"==", TK_EQ},        // equal
   {"^(-[0-9]|[0-9])[0-9]*", TK_DIGITAL},
-  {"\\-", '-'},
-  {"\\*", '*'},
-  {"\\/", '/'},
+  {"\\-", TK_SUB},
+  {"\\*", TK_MULIT},
+  {"\\/", TK_DIVI},
   {"\\(", TK_LPARE},
   {"\\)", TK_RPARE},
   {",", TK_COMMA},
