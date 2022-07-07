@@ -159,12 +159,12 @@ uint32_t Find_Oper(int p, int q) {
   printf("find in bound p ~~ q\n");
   int cnt = 0;
   for(int i = q; i >= p; i--) {
-    printf("%c", tokens[i].type);
+    printf("%c\n", tokens[i].type);
     if(tokens[i].type == TK_RPARE) 
       cnt++;
     else if(tokens[i].type == TK_LPARE) 
       cnt--;
-    if(cnt < 0) return -1;
+    if(cnt != 0) return -1;
     if(cnt == 0 && (tokens[i].type == '+' || tokens[i].type == '-' 
     || tokens[i].type == '*' || tokens[i].type == '/'))
       return i;
