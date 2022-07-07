@@ -205,10 +205,10 @@ uint32_t eval(int p, int q, bool* success) {
     uint32_t val2 = eval(op + 1, q, success);
     
     switch (tokens[op].type) {
-      case '+': return val1 + val2;
-      case '-': return val1 - val2;
-      case '*': return val1 * val2;
-      case '/': return val1 / val2;
+      case TK_PLUS: return val1 + val2;
+      case TK_SUB: return val1 - val2;
+      case TK_MULTI: return val1 * val2;
+      case TK_DIVI: return val1 / val2;
       default: Assert(0, "Error Main Operation");
     }
   }
