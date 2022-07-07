@@ -73,9 +73,11 @@ static int cmd_p(char *args) {
     return 0;
   }
   printf("%s\n", args);
-  bool *success = NULL; 
+  bool *success = malloc(sizeof(int));
+  *success = true; 
   expr(args, success);
   if(*success == false) Log("get val of expr is Error\n");
+  free(success);
   return 0;
 }
 
