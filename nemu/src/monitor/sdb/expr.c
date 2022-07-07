@@ -205,7 +205,7 @@ uint32_t eval(int p, int q, bool* success) {
     uint32_t val2 = eval(op + 1, q, success);
     printf("%d   %d\n", val1, val2);
     printf("%d   %d\n", op, tokens[op].type);
-    if(*success == true) printf("true\n");
+    if(*success == 1) printf("true\n");
     else printf("Error\n");
     switch (tokens[op].type) {
       case TK_PLUS: return val1 + val2;
