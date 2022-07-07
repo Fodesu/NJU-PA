@@ -170,103 +170,39 @@ uint32_t Find_Oper(int p, int q) {
   Assert(0, "cannot find main operation");
 }
  
- static int eval(int p, int q, bool *success) {
-        if(p > q){
-                *success =false;
-                return 0;
-        }
-        else if(p == q){
-                if(tokens[p].type == TK_DIGITAL){
-                        return atoi(tokens[p].str);
-                }
-        }
-        else if(check_parentheses(p, q) == true){
-                return eval(p+1, q-1, success);
-        }
-        else if(check_parentheses(p, q) == true){
-                return eval(p+1, q-1, success);
-        }
-        else{
-                int op = p, index = p;
-                int top = 0;
-                while(index < q){
-                        if(tokens[index].type == TK_DIGITAL)
-                                index++;
-                        if(tokens[index].type == TK_LPARE){
-                                index++;
-                                top++;
-                                while(top != 0){
-                                        if(tokens[index].type == TK_LPARE){
-                                                top++;
-                                        }
-                                        if(tokens[index].type == TK_RPARE){
-                                                top--;
-                                                if(top < 0){
-                                                        *success = false;
-                                                        return 0;
-                                                }
-                                        }
-                                        if(index++>q){
-                                                *success = false;
-                                                return 0;
-                                        }
-                                }
-                        }
-                        else if(tokens[index].type == TK_PLUS || tokens[index].type == TK_SUB){
-                                op = index;
-                                index++;
-                        }
-                        else if(tokens[index].type == TK_MULTI || tokens[index].type == TK_DIVI){
-                                if(tokens[op].type != TK_PLUS && tokens[op].type != TK_SUB)
-                                        op = index;
-                                index++;
-                        }
-                }
-                int val1 = eval(p, op - 1, success);
-                int val2 = eval(op + 1, q, success);
 
-                switch(tokens[op].type){
-                        case TK_PLUS: return val1 + val2;
-                        case TK_SUB: return val1 - val2;
-                        case TK_MULTI: return val1 * val2;
-                        case TK_DIVI: return val1 / val2;
-                        //defult: printf("Unkown operate type\n");
-                }
-        }
-        return 0;
-}
-// uint32_t eval(int p, int q, bool* success) {
-//   printf("in the %d ~ %d\n", p, q);
-//   if (p > q) {
-//     *success = false; 
-//     printf("Bad Range\n");
-//     return 0;
-//   }
-//   else if (p == q) {
-//     printf("%s\n", tokens[p].str);
-//     return atoi(tokens[p].str);
-//   }
-//   else if (check_parentheses(p, q) == true) {
-//     /* The expression is surrounded by a matched pair of parentheses.
-//      * If that is the case, just throw away the parentheses.
-//      */
-//     return eval(p + 1, q - 1, success);
-//   }
-//   else {
-//     int op = Find_Oper(p, q);
-//     if(op == -1) success = false;
-//     uint32_t val1 = eval(p, op - 1, success);
-//     uint32_t val2 = eval(op + 1, q, success);
+uint32_t eval(int p, int q, bool* success) {
+  printf("in the %d ~ %d\n", p, q);
+  if (p > q) {
+    *success = false; 
+    printf("Bad Range\n");
+    return 0;
+  }
+  else if (p == q) {
+    printf("%s\n", tokens[p].str);
+    return atoi(tokens[p].str);
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1, success);
+  }
+  else {
+    int op = Find_Oper(p, q);
+    if(op == -1) success = false;
+    uint32_t val1 = eval(p, op - 1, success);
+    uint32_t val2 = eval(op + 1, q, success);
     
-//     switch (tokens[op].type) {
-//       case '+': return val1 + val2;
-//       case '-': return val1 - val2;
-//       case '*': return val1 * val2;
-//       case '/': return val1 / val2;
-//       default: Assert(0, "Error Main Operation");
-//     }
-//   }
-// }
+    switch (tokens[op].type) {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': return val1 / val2;
+      default: Assert(0, "Error Main Operation");
+    }
+  }
+}
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
