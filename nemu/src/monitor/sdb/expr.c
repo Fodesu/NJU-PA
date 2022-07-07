@@ -180,7 +180,7 @@ uint32_t eval(int p, int q, bool* success) {
     return 0;
   }
   else if (p == q) {
-    printf("%d\n", atoi(tokens[p].str));
+    printf("%s\n", tokens[p].str);
     return atoi(tokens[p].str);
   }
   else if (check_parentheses(p, q) == true) {
