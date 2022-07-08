@@ -218,7 +218,10 @@ uint32_t eval(int p, int q, bool* success) {
       case TK_PLUS: return val1 + val2;
       case TK_SUB: return val1 - val2;
       case TK_MULTI: return val1 * val2;
-      case TK_DIVI: return val1 / val2;
+      case TK_DIVI: {
+        if(val2 == 0) printf("Error of Div 0\n");
+        return val1 / val2;
+      }
       default: Assert(0, "Error Main Operation");
     }
   }
