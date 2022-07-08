@@ -245,7 +245,8 @@ uint32_t eval(int p, int q, bool* success) {
     switch (tokens[op].type) {
       case TK_PLUS: return val1 + val2;
       case TK_MINUS: return val1 - val2;
-      case TK_DEREF: return -val2;
+      case TK_NEG: return -val2;
+    //  case TK_DEREF: 
       case TK_MULTI: return val1 * val2;
       case TK_DIVI: {
         if(val2 == 0) {
