@@ -230,9 +230,11 @@ uint32_t eval(int p, int q, bool* success) {
     printf("%d   %d\n", op, tokens[op].type);
     uint32_t val1 = 0;
     uint32_t val2 = 0;
-    if(tokens[op].type == TK_DEREF || tokens[op].type == TK_NEG){
+    if(tokens[op].type == TK_NEG){
       val2 = eval(op+1, q, success);
       printf("val2 == %d\n", val2);
+    } else if(tokens[op].type == TK_DEREF) {
+
     }
     else {
       val1 = eval(p, op - 1, success);
@@ -246,7 +248,7 @@ uint32_t eval(int p, int q, bool* success) {
       case TK_PLUS: return val1 + val2;
       case TK_MINUS: return val1 - val2;
       case TK_NEG: return -val2;
-    //  case TK_DEREF: 
+      case TK_DEREF: return isa_reg_str2val(tokens[q].str,success);
       case TK_MULTI: return val1 * val2;
       case TK_DIVI: {
         if(val2 == 0) {
