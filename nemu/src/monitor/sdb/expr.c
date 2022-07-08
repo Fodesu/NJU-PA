@@ -197,7 +197,7 @@ uint32_t Find_Oper(int p, int q) {
       MINN = 2;
       pi = i;
     }
-    if(cnt == 0 && MINN > 3 && (tokens[i].type == TK_DEREF || tokens[i].type == TK_NEG)){
+    if(cnt == 0 && MINN >= 3 && (tokens[i].type == TK_DEREF || tokens[i].type == TK_NEG)){
       MINN = 3;
       pi = i;
     }
