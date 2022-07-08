@@ -228,9 +228,17 @@ uint32_t eval(int p, int q, bool* success) {
     int op = Find_Oper(p, q);
     if(op == -1) success = false;
     printf("%d   %d\n", op, tokens[op].type);
-    uint32_t val1 = eval(p, op - 1, success);
-    uint32_t val2 = eval(op + 1, q, success);
-    printf("%d   %d\n", val1, val2);
+    uint32_t val1 = 0;
+    uint32_t val2 = 0;
+    if(tokens[op].type == TK_DEREF || tokens[op].type == TK_NEG){
+      val2 = eval(op+1, q, success);
+      printf("val2 == %d\n", val2);
+    }
+    else {
+      val1 = eval(p, op - 1, success);
+      val2 = eval(op + 1, q, success);
+      printf("val1 = %d   val2 = %d\n", val1, val2);
+    }
     printf("%d   %d\n", op, tokens[op].type);
     if(*success == 1) printf("true\n");
     else printf("Error\n");
