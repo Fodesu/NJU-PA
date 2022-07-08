@@ -6,10 +6,9 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ, TK_DIGITAL,
-  TK_LPARE, TK_RPARE,TK_COMMA, TK_PLUS, 
-  TK_SUB, TK_DIVI, TK_MULTI,
-
+  TK_NOTYPE = 256, TK_EQ, TK_NUM, TK_HEXNUM,
+  TK_LPARE, TK_RPARE,TK_COMMA, TK_PLUS, TK_DEREF, 
+  TK_DIVI, TK_MULTI, TK_REGNAME, TK_MINUS, TK_NEG,
   /* TODO: Add more token types */
 
 };
@@ -26,8 +25,10 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", TK_PLUS},         // plus
   {"==", TK_EQ},        // equal
-  {"^(-[0-9]|[0-9])[0-9]*", TK_DIGITAL},
-  {"-", TK_SUB},
+  {"0x[0-9,a-f]+", TK_HEXNUM},
+  {"\\$[a-z]{2,3}", TK_REGNAME},
+  {"[0-9]+", TK_NUM},
+  {"\\-", TK_MINUS},
   {"\\*", TK_MULTI},
   {"\\/", TK_DIVI},
   {"\\(", TK_LPARE},
@@ -94,14 +95,19 @@ static bool make_token(char *e) {
                   tokens[nr_token].type = TK_PLUS;
                   nr_token++;
                   break;
-          case TK_SUB :
+          case TK_MINUS :
                   printf("%d\n", nr_token);
-                  tokens[nr_token].type = TK_SUB;
+                  if(nr_token >= 1 && (tokens[nr_token-1].type == TK_REGNAME || tokens[nr_token-1].type == TK_NUM || tokens[nr_token-1].type == TK_RPARE))
+                    tokens[nr_token].type = TK_MINUS ;
+                  else tokens[nr_token].type = TK_NEG;
                   nr_token++;
                   break;
           case TK_MULTI :
                   printf("%d\n", nr_token);
-                  tokens[nr_token].type = TK_MULTI;
+                  if(nr_token >= 1 && (tokens[nr_token-1].type == TK_REGNAME || tokens[nr_token-1].type == TK_NUM || tokens[nr_token-1].type == TK_RPARE))
+                    tokens[nr_token].type = TK_MULTI;
+                  else 
+                    tokens[nr_token].type = TK_DEREF;
                   nr_token++;
                   break;
           case TK_DIVI :
@@ -119,9 +125,19 @@ static bool make_token(char *e) {
                   tokens[nr_token].type = TK_RPARE;
                   nr_token++;
                   break;
-          case TK_DIGITAL :
+          case TK_HEXNUM:
+                  tokens[nr_token].type = TK_HEXNUM;
+                  if(substr_len < 32){
+                         strncpy(tokens[nr_token].str, substr_start, substr_len);  
+                         printf("%s\n", tokens[nr_token].str);
+                  } else {
+                          printf("number too long\n");
+                  }
+                  nr_token++;
+                  break;
+          case TK_NUM :
                   printf("%d\n", nr_token);
-                  tokens[nr_token].type = TK_DIGITAL;
+                  tokens[nr_token].type = TK_NUM;
                   if(substr_len < 32){
                          strncpy(tokens[nr_token].str, substr_start, substr_len);  
                          printf("%s\n", tokens[nr_token].str);
@@ -173,7 +189,7 @@ uint32_t Find_Oper(int p, int q) {
     else if(tokens[i].type == TK_LPARE) 
       cnt--;
     if(cnt < 0) return -1;
-    if(cnt == 0 && MINN > 1 && (tokens[i].type == TK_PLUS || tokens[i].type == TK_SUB)){
+    if(cnt == 0 && MINN > 1 && (tokens[i].type == TK_PLUS || tokens[i].type == TK_MINUS)){
       MINN = 1;
       pi = i;
     }
@@ -216,7 +232,8 @@ uint32_t eval(int p, int q, bool* success) {
     else printf("Error\n");
     switch (tokens[op].type) {
       case TK_PLUS: return val1 + val2;
-      case TK_SUB: return val1 - val2;
+      case TK_MINUS: return val1 - val2;
+      case TK_DEREF: return -val2;
       case TK_MULTI: return val1 * val2;
       case TK_DIVI: {
         if(val2 == 0) {
