@@ -128,6 +128,8 @@ static bool make_token(char *e) {
           case TK_REGNAME:
                   printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_REGNAME;
+                  strncpy(tokens[nr_token].str, substr_start, substr_len);  
+                  printf("%s\n", tokens[nr_token].str);
                   nr_token++;
                   break;
           case TK_HEXNUM:
