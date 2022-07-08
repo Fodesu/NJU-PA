@@ -221,6 +221,7 @@ uint32_t eval(int p, int q, bool* success) {
       case TK_DIVI: {
         if(val2 == 0) {
           printf("Error of Div 0\n");
+          *success = false;
           return 0;
         }
         return val1 / val2;
