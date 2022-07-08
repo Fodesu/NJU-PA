@@ -26,7 +26,7 @@ static struct rule {
   {"\\+", TK_PLUS},         // plus
   {"==", TK_EQ},        // equal
   {"0x[0-9,a-f]+", TK_HEXNUM},
-  {"\\$[a-z]{2,3}", TK_REGNAME},
+  {"\\$s|ra|sp|gp|tp|t0|t1|t2|s0|s1|a0|a1|a2|a3|a4|a5|a6|a7|s2|s3|s4|s5|s6|s7|s8|s9|s10|s11|t3|t4|t5|t6", TK_REGNAME},
   {"[0-9]+", TK_NUM},
   {"\\-", TK_MINUS},
   {"\\*", TK_MULTI},
@@ -125,6 +125,11 @@ static bool make_token(char *e) {
                   tokens[nr_token].type = TK_RPARE;
                   nr_token++;
                   break;
+          case TK_REGNAME:
+                  printf("%d\n", nr_token);
+                  tokens[nr_token].type = TK_REGNAME;
+                  nr_token++;
+                  break;
           case TK_HEXNUM:
                   tokens[nr_token].type = TK_HEXNUM;
                   if(substr_len < 32){
@@ -181,7 +186,7 @@ static bool check_parentheses(int p, int q) {
 
 uint32_t Find_Oper(int p, int q) {
   printf("finding op in the bound %d ~~ %d\n", p, q);
-  int cnt = 0, pi = -1, MINN = 4;
+  int cnt = 0, pi = -1, MINN = 10;
   for(int i = q; i >= p; i--) {
     printf("%c\n", tokens[i].type);
     if(tokens[i].type == TK_RPARE) 
@@ -197,8 +202,12 @@ uint32_t Find_Oper(int p, int q) {
       MINN = 2;
       pi = i;
     }
-    if(cnt == 0 && MINN >= 3 && (tokens[i].type == TK_DEREF || tokens[i].type == TK_NEG)){
+    if(cnt == 0 && MINN >= 3 && tokens[i].type == TK_NEG){
       MINN = 3;
+      pi = i;
+    }
+    if(cnt == 0 && MINN > 4 && tokens[i].type == TK_DEREF) {
+      MINN = 4;
       pi = i;
     }
   }
