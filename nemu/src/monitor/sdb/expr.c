@@ -166,7 +166,19 @@ static bool make_token(char *e) {
           case TK_RMOV :
                   tokens[nr_token].type = TK_RMOV;
                   nr_token++;
-                  break;        
+                  break;     
+          case TK_BAND :
+                  tokens[nr_token].type = TK_BAND;
+                  nr_token++;
+                  break;   
+          case TK_BOR :
+                  tokens[nr_token].type = TK_BOR;
+                  nr_token++;
+                  break;  
+          case TK_XOR :
+                  tokens[nr_token].type = TK_XOR;
+                  nr_token++;
+                  break; 
           case TK_HEXNUM:
                   tokens[nr_token].type = TK_NUM;
                   if(substr_len < 32){
