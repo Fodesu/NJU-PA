@@ -341,6 +341,7 @@ uint32_t eval(int p, int q, bool* success) {
           *success = false;
           return 0;
         }
+        if(val1 < 0) return -((val1 ^ -1) / 2);
         Log("%u %u %u",  val1, val2, val1 / val2);
         return val1 / val2;
       }
