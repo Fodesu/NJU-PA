@@ -95,19 +95,19 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
           case TK_PLUS :
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_PLUS;
                   nr_token++;
                   break;
           case TK_MINUS :
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   if(nr_token >= 1 && (tokens[nr_token-1].type == TK_REGNAME || tokens[nr_token-1].type == TK_NUM || tokens[nr_token-1].type == TK_RPARE))
                     tokens[nr_token].type = TK_MINUS ;
                   else tokens[nr_token].type = TK_NEG;
                   nr_token++;
                   break;
           case TK_MULTI :
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   if(nr_token >= 1 && (tokens[nr_token-1].type == TK_REGNAME || tokens[nr_token-1].type == TK_NUM || tokens[nr_token-1].type == TK_RPARE))
                     tokens[nr_token].type = TK_MULTI;
                   else 
@@ -115,32 +115,32 @@ static bool make_token(char *e) {
                   nr_token++;
                   break;
           case TK_DIVI :
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_DIVI;
                   nr_token++;
                   break;
           case TK_LPARE :
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_LPARE;
                   nr_token++;
                   break;
           case TK_RPARE :
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_RPARE;
                   nr_token++;
                   break;
           case TK_EQ : 
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_EQ;
                   nr_token++;
                   break;
           case TK_NEQ :
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_NEQ;
                   nr_token++;
                   break;
           case TK_REGNAME:
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_REGNAME;
                   strncpy(tokens[nr_token].str, substr_start+1, substr_len-1);  
                   printf("%s\n", tokens[nr_token].str);
@@ -168,7 +168,7 @@ static bool make_token(char *e) {
                   nr_token++;
                   break;
           case TK_NUM :
-                  printf("%d\n", nr_token);
+                  //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_NUM;
                   if(substr_len < 32){
                          strncpy(tokens[nr_token].str, substr_start, substr_len);  
@@ -212,7 +212,7 @@ static bool check_parentheses(int p, int q) {
 
 
 uint32_t Find_Oper(int p, int q) {
-  printf("finding op in the bound %d ~~ %d\n", p, q);
+  printf("Finding op in the bound %d ~~ %d\n", p, q);
   int cnt = 0, pi = -1, MINN = 10;
   for(int i = q; i >= p; i--) {
     printf("%c\n", tokens[i].type);
@@ -256,10 +256,10 @@ uint32_t Find_Oper(int p, int q) {
  
 
 uint32_t eval(int p, int q, bool* success) {
-  printf("in the %d ~ %d\n", p, q);
+  printf("Eval in the %d ~ %d\n", p, q);
   if (p > q) {
     *success = false; 
-    printf("Bad Range\n");
+    printf("Bad P~ Q Range In Fuc Eval\n");
     return 0;
   }
   else if (p == q) {
@@ -275,19 +275,19 @@ uint32_t eval(int p, int q, bool* success) {
   else {
     int op = Find_Oper(p, q);
     if(op == -1) success = false;
-    printf("%d   %d\n", op, tokens[op].type);
+    printf("OP = %d | tokens[op] type = %d\n", op, tokens[op].type);
     uint32_t val1 = 0;
     uint32_t val2 = 0;
     if(tokens[op].type == TK_NEG){
       val2 = eval(op+1, q, success);
-      printf("val2 == %d\n", val2);
+      printf("In The op '-' val2 == %d\n", val2);
     } else if(tokens[op].type == TK_DEREF) {
 
     }
     else {
       val1 = eval(p, op - 1, success);
       val2 = eval(op + 1, q, success);
-      printf("val1 = %d   val2 = %d\n", val1, val2);
+      printf("In The Normal Op val1 = %d   val2 = %d\n", val1, val2);
     }
     printf("%d   %d\n", op, tokens[op].type);
     if(*success == 1) printf("true\n");
