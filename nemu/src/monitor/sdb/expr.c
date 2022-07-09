@@ -146,6 +146,14 @@ static bool make_token(char *e) {
                   printf("%s\n", tokens[nr_token].str);
                   nr_token++;
                   break;
+          case TK_AND : 
+                  tokens[nr_token].type = TK_AND;
+                  nr_token++;
+                  break;
+          case TK_OR  :
+                  tokens[nr_token].type = TK_OR;
+                  nr_token++;
+                  break;
           case TK_HEXNUM:
                   tokens[nr_token].type = TK_NUM;
                   if(substr_len < 32){
