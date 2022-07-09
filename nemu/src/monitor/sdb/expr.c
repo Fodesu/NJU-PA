@@ -26,7 +26,7 @@ static struct rule {
   {"\\+", TK_PLUS},         // plus
   {"==", TK_EQ},        // equal
   {"0x[0-9,a-f]+", TK_HEXNUM},
-  {"\\$s|ra|sp|gp|tp|t0|t1|t2|s0|s1|a0|a1|a2|a3|a4|a5|a6|a7|s2|s3|s4|s5|s6|s7|s8|s9|s10|s11|t3|t4|t5|t6", TK_REGNAME},
+  {"\\$(0|ra|sp|gp|tp|t0|t1|t2|s0|s1|a0|a1|a2|a3|a4|a5|a6|a7|s2|s3|s4|s5|s6|s7|s8|s9|s10|s11|t3|t4|t5|t6)", TK_REGNAME},
   {"[0-9]+", TK_NUM},
   {"\\-", TK_MINUS},
   {"\\*", TK_MULTI},
