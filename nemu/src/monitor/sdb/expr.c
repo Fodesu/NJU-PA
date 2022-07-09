@@ -287,7 +287,7 @@ uint32_t eval(int p, int q, bool* success) {
     else {
       val1 = eval(p, op - 1, success);
       val2 = eval(op + 1, q, success);
-      printf("In The Normal Op val1 = %d   val2 = %d\n", val1, val2);
+      printf("In The Normal Op val1 = %u   val2 = %u\n", val1, val2);
     }
     printf("%d   %d\n", op, tokens[op].type);
     if(*success == 1) printf("true\n");
