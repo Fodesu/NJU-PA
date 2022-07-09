@@ -348,6 +348,8 @@ uint32_t eval(int p, int q, bool* success) {
       case TK_NEQ: return val1 != val2;
       case TK_AND: return val1 && val2;
       case TK_OR: return val1 || val2;
+      case TK_LMOV: return val1 << val2;
+      case TK_RMOV: return val1 >> val2;
       default: Assert(0, "Error Main Operation");
     }
   }
