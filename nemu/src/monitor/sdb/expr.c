@@ -304,6 +304,7 @@ uint32_t eval(int p, int q, bool* success) {
           *success = false;
           return 0;
         }
+        Log("%d", val1 / val2);
         return val1 / val2;
       }
       case TK_EQ: return val1 == val2;
