@@ -9,7 +9,7 @@ enum {
   TK_NOTYPE = 256, TK_EQ, TK_NEQ, TK_NUM, TK_HEXNUM,
   TK_LPARE, TK_RPARE,TK_COMMA, TK_PLUS, TK_DEREF, 
   TK_DIVI, TK_MULTI, TK_REGNAME, TK_MINUS, TK_NEG,
-  TK_AND, TK_OR,
+  TK_AND, TK_OR, TK_LMOV, TK_RMOV, TK_BOR, TK_XOR, TK_BAND,
   /* TODO: Add more token types */
 
 };
@@ -32,6 +32,11 @@ static struct rule {
   {"0x[0-9,a-f]+", TK_HEXNUM},
   {"\\$(0|ra|sp|gp|tp|t0|t1|t2|s0|s1|a0|a1|a2|a3|a4|a5|a6|a7|s2|s3|s4|s5|s6|s7|s8|s9|s10|s11|t3|t4|t5|t6)", TK_REGNAME},
   {"[0-9]+", TK_NUM},
+  {"<<", TK_LMOV},
+  {">>", TK_RMOV},
+  {"\\|", TK_BOR},
+  {"&", TK_AND},
+  {"^", TK_XOR},
   {"\\-", TK_MINUS},
   {"\\*", TK_MULTI},
   {"\\/", TK_DIVI},
@@ -154,6 +159,14 @@ static bool make_token(char *e) {
                   tokens[nr_token].type = TK_OR;
                   nr_token++;
                   break;
+          case TK_LMOV :
+                  tokens[nr_token].type = TK_LMOV;
+                  nr_token++;
+                  break;
+          case TK_RMOV :
+                  tokens[nr_token].type = TK_RMOV;
+                  nr_token++;
+                  break;        
           case TK_HEXNUM:
                   tokens[nr_token].type = TK_NUM;
                   if(substr_len < 32){
@@ -229,15 +242,31 @@ uint32_t Find_Oper(int p, int q) {
     else if(tokens[i].type == TK_LPARE) 
       cnt--;
     if(cnt < 0) return -1;
-    if(cnt == 0 && MINN > -2 && tokens[i].type == TK_OR) {
+    if(cnt == 0 && MINN > -6 && tokens[i].type == TK_OR) {
+      MINN = -6;
+      pi = i;
+    }
+    if(cnt == 0 && MINN > -5 && tokens[i].type == TK_AND) {
+      MINN = -5;
+      pi = i;
+    }
+    if(cnt == 0 && MINN > -4 && tokens[i].type == TK_BOR) {
+      MINN = -4;
+      pi = i;
+    }
+    if(cnt == 0 && MINN > -3 && tokens[i].type == TK_XOR) {
+      MINN = -3;
+      pi = i;
+    }
+    if(cnt == 0 && MINN > -2 && tokens[i].type == TK_BAND) {
       MINN = -2;
       pi = i;
     }
-    if(cnt == 0 && MINN > -1 && tokens[i].type == TK_AND) {
+    if(cnt == 0 && MINN > -1 && (tokens[i].type == TK_EQ || tokens[i].type == TK_NEQ)) {
       MINN = -1;
       pi = i;
     }
-    if(cnt == 0 && MINN > 0 && (tokens[i].type == TK_EQ || tokens[i].type == TK_NEQ)) {
+    if(cnt == 0 && MINN > 0 && (tokens[i].type == TK_LMOV || tokens[i].type == TK_RMOV)) {
       MINN = 0;
       pi = i;
     }
