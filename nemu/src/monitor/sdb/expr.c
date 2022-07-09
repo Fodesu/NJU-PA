@@ -156,7 +156,7 @@ static bool make_token(char *e) {
                           if(tokens[nr_token].str[i] <= '9')
                             ans = ans * 16 + tokens[nr_token].str[i] - '0';
                           else
-                            ans = ans * 16 + tokens[nr_token].str[i] - 'A' + 10;
+                            ans = ans * 16 + tokens[nr_token].str[i] - 'a' + 10;
                          }
                          char buf[32] = {};
                          memset(buf, 0, sizeof(buf));
