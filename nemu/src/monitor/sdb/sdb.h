@@ -4,5 +4,5 @@
 #include <common.h>
 
 word_t expr(char *e, bool *success);
-
+int cmd_p(char *args);
 #endif

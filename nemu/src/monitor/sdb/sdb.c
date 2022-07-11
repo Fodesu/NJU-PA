@@ -9,7 +9,7 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
-
+void new_wp(char* args);
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -47,7 +47,7 @@ static int cmd_info(char *args);
 
 static int cmd_x(char *args);
 
-static int cmd_p(char *args);
+static int cmd_w(char *args);
 
 static struct {
   const char *name;
@@ -61,13 +61,23 @@ static struct {
   { "info", "information for Register or watchpoint", cmd_info},
   {"x", "read memory by virtual address", cmd_x},
   {"p", "print val of expr", cmd_p},
+  {"w", "watching the expr change", cmd_w},
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
-static int cmd_p(char *args) {
+static int cmd_w(char *args) {
+  if(args == NULL) {
+    printf("No Arguments\n");
+    return 0;
+  }
+  new_wp(args);
+  return 0;
+}
+
+int cmd_p(char *args) {
   if(args == NULL) {
     printf("No Arguments\n");
     return 0;

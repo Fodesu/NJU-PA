@@ -19,6 +19,7 @@ const rtlreg_t rzero = 0;
 rtlreg_t tmp_reg[4];
 
 void device_update();
+void check_watchpiont();
 void fetch_decode(Decode *s, vaddr_t pc);
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
@@ -26,7 +27,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (ITRACE_COND) log_write("%s\n", _this->logbuf);
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc)); 
+#ifdef CONFIG_WATCHPOINT
+  check_watchpiont();
+#endif
 }
 
 #include <isa-exec.h>

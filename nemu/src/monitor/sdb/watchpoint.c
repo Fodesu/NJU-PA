@@ -7,7 +7,8 @@ typedef struct watchpoint {
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
-
+  char* args;
+  uint32_t preval;
 } WP;
 
 static WP wp_pool[NR_WP] = {};
@@ -25,4 +26,35 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
+WP* new_wp(char* args) {
+ assert(free_->next != NULL);
+ WP* tmp = free_->next;
+ tmp->next = head->next;
+ head->next = tmp;
+ free_->next = tmp->next;
+ tmp->args = args;
+ return tmp;
+}
 
+void free_wp(WP *wp, uint32_t nb) {
+  uint32_t ct = 1;
+  WP* cur = head;
+  while(ct < nb) {
+    cur = cur->next;
+  }
+  cur->next = cur->next->next;
+  wp->next = free_->next;
+  free_->next = wp;
+}
+
+void check_watchpiont() {
+  WP* cur = head;
+  while(cur->next != NULL) {
+    uint32_t newval = cmd_p(cur->args);
+    if(newval != cur->next->preval) {
+      printf("No%d: expr- %s 's val is change from %d, %d", cur->NO, cur->args, cur->preval, newval);
+      nemu_state.state = NEMU_STOP;
+    }
+    cur = cur->next;
+  }
+}
