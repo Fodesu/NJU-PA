@@ -11,6 +11,7 @@ void init_regex();
 void init_wp_pool();
 void new_wp(char* args);
 void show_watchpoint();
+void free_wp(uint32_t nb);
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -74,7 +75,10 @@ static struct {
 
 static int cmd_d(char *args) {
   int ans = atoi(args);
-  
+  if(ans == 0) printf("Error Arguments\n");
+  else {
+    free_wp(ans);
+  }
   return ans;
 }
 
