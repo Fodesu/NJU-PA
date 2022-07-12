@@ -50,6 +50,8 @@ static int cmd_x(char *args);
 
 static int cmd_w(char *args);
 
+static int cmd_d(char *args);
+
 static struct {
   const char *name;
   const char *description;
@@ -63,11 +65,18 @@ static struct {
   {"x", "read memory by virtual address", cmd_x},
   {"p", "print val of expr", cmd_p},
   {"w", "watching the expr change", cmd_w},
+  {"d", "delete watchpoint", cmd_d},
   /* TODO: Add more commands */
 
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+
+static int cmd_d(char *args) {
+  int ans = atoi(args);
+  
+  return ans;
+}
 
 static int cmd_w(char *args) {
   if(args == NULL) {

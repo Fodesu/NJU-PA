@@ -39,15 +39,16 @@ WP* new_wp(char* args) {
  return tmp;
 }
 
-void free_wp(WP *wp, uint32_t nb) {
-  uint32_t ct = 1;
+void free_wp(uint32_t nb) {
   WP* cur = head;
-  while(ct < nb) {
+  while(cur->next != NULL && cur->next->NO != nb ) {
     cur = cur->next;
   }
+  if(cur->next == NULL) printf("can not find that number of watchpoint\n");
+  WP* a = cur->next;
   cur->next = cur->next->next;
-  wp->next = free_->next;
-  free_->next = wp;
+  a->next = free_->next;
+  free_->next = a;
 }
 
 void check_watchpiont() {
