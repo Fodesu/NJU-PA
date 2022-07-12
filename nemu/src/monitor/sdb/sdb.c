@@ -75,6 +75,7 @@ static int cmd_w(char *args) {
     return 0;
   }
   bool* s = (bool*)malloc(sizeof(bool));
+  *s = true;
   expr(args, s);
   if(*s == true){
     new_wp(args);
