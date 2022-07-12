@@ -78,6 +78,7 @@ static int cmd_d(char *args) {
   if(ans == 0) printf("Error Arguments\n");
   else {
     free_wp(ans);
+    printf("Successful delete No: %d watchpoint\n", ans);
   }
   return ans;
 }
