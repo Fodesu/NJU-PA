@@ -29,9 +29,9 @@ void init_wp_pool() {
 WP* new_wp(char* args) {
  Assert(free_->next != NULL, "free_->next is NULL\n");
  WP* tmp = free_->next;
+ free_->next = tmp->next;
  tmp->next = head->next;
  head->next = tmp;
- free_->next = free_->next->next;
  tmp->args = args;
  Log("In the new_wp function");
  return tmp;
