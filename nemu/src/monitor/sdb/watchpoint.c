@@ -27,14 +27,13 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 WP* new_wp(char* args) {
-
  Assert(free_->next != NULL, "free_->next is NULL\n");
  WP* tmp = free_->next;
  tmp->next = head->next;
  head->next = tmp;
- free_->next = tmp->next;
+ free_->next = free_->next->next;
  tmp->args = args;
-  Log("In the new_wp function\n");
+ Log("In the new_wp function");
  return tmp;
 }
 
