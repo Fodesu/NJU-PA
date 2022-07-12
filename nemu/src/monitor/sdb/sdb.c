@@ -151,7 +151,7 @@ static int cmd_info(char *args) {
     isa_reg_display();
   } else if(strcmp(arg, "w") == 0) {
     show_watchpoint();
-  }
+  } else printf("Unknow Arguments\n");
   return 0;
 }
 
