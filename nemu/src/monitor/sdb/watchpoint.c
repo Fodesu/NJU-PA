@@ -59,3 +59,11 @@ void check_watchpiont() {
     cur = cur->next;
   }
 }
+
+void show_watchpoint() {
+  WP* cur = head;
+  while(cur->next != NULL) {
+    printf("No: %d watchpoint of expr: %s\n", cur->next->NO, cur->next->args);
+    cur = cur->next;
+  }
+}
