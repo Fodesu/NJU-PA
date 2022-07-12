@@ -52,6 +52,7 @@ void free_wp(uint32_t nb) {
   cur->next = cur->next->next;
   a->next = free_->next;
   free_->next = a;
+  printf("Successful delete No: %d watchpoint\n", a->NO);
 }
 
 void check_watchpiont() {

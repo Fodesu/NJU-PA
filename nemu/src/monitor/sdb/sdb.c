@@ -75,11 +75,10 @@ static struct {
 
 static int cmd_d(char *args) {
   int ans = atoi(args);
-  if(ans == 0) printf("Error Arguments\n");
-  else {
+  if(ans == 0) 
+    printf("Error Arguments\n");
+  else 
     free_wp(ans);
-    printf("Successful delete No: %d watchpoint\n", ans);
-  }
   return ans;
 }
 
