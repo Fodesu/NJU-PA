@@ -32,6 +32,7 @@ WP* new_wp(char* args) {
  free_->next = tmp->next;
  tmp->next = head->next;
  head->next = tmp;
+ Log("want to copy args");
  strcpy(tmp->args, args);
  Log("args is %s", args);
  return tmp;
