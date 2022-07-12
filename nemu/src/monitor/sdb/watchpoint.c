@@ -32,7 +32,7 @@ WP* new_wp(char* args) {
  free_->next = tmp->next;
  tmp->next = head->next;
  head->next = tmp;
- tmp->args = args;
+ strcpy(tmp->args, args);
  Log("args is %s", args);
  return tmp;
 }
@@ -64,6 +64,7 @@ void show_watchpoint() {
   WP* cur = head;
   while(cur->next != NULL) {
     printf("No: %d watchpoint of expr: %s\n", cur->next->NO, cur->next->args);
+
     cur = cur->next;
   }
 }
