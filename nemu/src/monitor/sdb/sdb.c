@@ -74,7 +74,11 @@ static int cmd_w(char *args) {
     printf("No Arguments\n");
     return 0;
   }
-  new_wp(args);
+  bool* s = (bool*)malloc(sizeof(bool));
+  expr(args, s);
+  if(*s == true){
+    new_wp(args);
+  } else printf("Arguments is not legal\n");
   return 0;
 }
 
