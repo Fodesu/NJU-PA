@@ -33,7 +33,7 @@ WP* new_wp(char* args) {
  tmp->next = head->next;
  head->next = tmp;
  tmp->args = args;
- Log("In the new_wp function");
+ Log("args is %s", args);
  return tmp;
 }
 
