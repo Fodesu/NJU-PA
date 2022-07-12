@@ -44,7 +44,10 @@ void free_wp(uint32_t nb) {
   while(cur->next != NULL && cur->next->NO != nb ) {
     cur = cur->next;
   }
-  if(cur->next == NULL) printf("can not find that number of watchpoint\n");
+  if(cur->next == NULL) {
+    printf("can not find that number of watchpoint\n");
+    return;
+  }
   WP* a = cur->next;
   cur->next = cur->next->next;
   a->next = free_->next;
