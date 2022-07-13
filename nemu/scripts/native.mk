@@ -32,5 +32,9 @@ $(clean-tools):
 	-@$(MAKE) -s -C $@ clean
 clean-tools: $(clean-tools)
 clean-all: clean distclean clean-tools
+COUNT_L := $(shell  find . -name "*.h" -or -name "*.c" | xargs grep -ve "^$$" | wc -l)
+
+count:
+	@echo $(COUNT_L) lines in nemu
 
 .PHONY: run gdb run-env clean-tools clean-all $(clean-tools)
