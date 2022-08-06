@@ -6,12 +6,15 @@ SO = -so
 CFLAGS  += -fPIC
 LDFLAGS += -rdynamic -shared -fPIC
 endif
-
+# nemu
 WORK_DIR  = $(shell pwd)
+# nemu/build
 BUILD_DIR = $(WORK_DIR)/build
-
+# nemu/include 
 INC_PATH := $(WORK_DIR)/include $(INC_PATH)
+# nemu/build/obj-riscv32-nemu-interpreter
 OBJ_DIR  = $(BUILD_DIR)/obj-$(NAME)$(SO)
+# nemu/build/risc32-nemu-interpreter-so
 BINARY   = $(BUILD_DIR)/$(NAME)$(SO)
 
 # Compilation flags
@@ -28,6 +31,12 @@ LDFLAGS := -O2 $(LDFLAGS)
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
 
 # Compilation patterns
+$(OBJ_DIR)/%.i: %.c
+	@echo + CC $<
+	@mkdir -p $(dir $@)
+	@$(CC) -E -C -o $@ $<
+	$(call call_fixdep, $(@:.o=.d), $@)
+
 $(OBJ_DIR)/%.o: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
