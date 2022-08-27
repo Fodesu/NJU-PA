@@ -10,7 +10,7 @@ const char *regs[] = {
 
 void isa_reg_display() {
   for(int i = 0; i < 32; i++) {
-    printf("%s is %d\n", reg_name(i, 0), gpr(i));
+    printf("%s is %d    %x\n", reg_name(i, 0), gpr(i), gpr(i));
   }
 }
 
@@ -23,4 +23,8 @@ word_t isa_reg_str2val(const char *s, bool *success) {
   }
   *success = false;
   return 0;
+}
+
+const char* paddtoname(const rtlreg_t* preg) {
+  return regs[check_reg_idx(preg - &gpr(0))];
 }

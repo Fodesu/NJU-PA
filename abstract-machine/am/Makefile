@@ -1,4 +1,5 @@
 NAME     := am
+### SRCS = src/plantform/nemu/.....c
 SRCS      = $(addprefix src/, $(AM_SRCS))
 INC_PATH += $(AM_HOME)/am/src
 

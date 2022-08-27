@@ -86,6 +86,7 @@ void fetch_decode(Decode *s, vaddr_t pc) {
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.instr.val, ilen);
 #endif
+  
 }
 
 /* Simulate how the CPU works. */

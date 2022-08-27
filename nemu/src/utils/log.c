@@ -3,6 +3,7 @@
 extern uint64_t g_nr_guest_instr;
 FILE *log_fp = NULL;
 
+// 初始化log文件覆盖原先的文件
 void init_log(const char *log_file) {
   log_fp = stdout;
   if (log_file != NULL) {

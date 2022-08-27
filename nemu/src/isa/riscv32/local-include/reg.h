@@ -3,8 +3,10 @@
 
 #include <common.h>
 
+const char* paddtoname(const rtlreg_t* preg);
+
 static inline int check_reg_idx(int idx) {
-  IFDEF(CONFIG_RT_CHECK, assert(idx >= 0 && idx < 32));
+  IFDEF(CONFIG_RT_CHECK, Assert(idx >= 0 && idx < 32, "out of the range of reg"));
   return idx;
 }
 
