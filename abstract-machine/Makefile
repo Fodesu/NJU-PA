@@ -27,7 +27,7 @@ ifeq ($(wildcard $(AM_HOME)/am/include/am.h),)
   $(error $$AM_HOME must be an AbstractMachine repo)
 endif
 
-### Check: environment variable `$ARCH` must be in the supported list
+## Check: environment variable `$ARCH` must be in the supported list
 ### 查看 $ARCH是否是支持的架构(在 $(AM_HOME)/scripts/*.mk)
 ### basename 返回最后一个点号之前的前缀
 ### notdir 去掉文件的目录
@@ -64,7 +64,6 @@ $(shell mkdir -p $(DST_DIR))
 IMAGE_REL = build/$(NAME)-$(ARCH)
 IMAGE     = $(abspath $(IMAGE_REL))
 ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
-
 ### Collect the files to be linked: object files (`.o`) and libraries (`.a`)
 ### OBJS = abstract-machine/build/riscv32-neme/ioe.o ......
 OBJS      = $(addprefix $(DST_DIR)/, $(addsuffix .o, $(basename $(SRCS))))

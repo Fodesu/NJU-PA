@@ -11,8 +11,8 @@ CFLAGS    += -fdata-sections -ffunction-sections
 LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
              --defsym=_pmem_start=0x80000000 --defsym=_entry_offset=0x0
 LDFLAGS   += --gc-sections -e _start
-NEMUFLAGS += -b -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
-
+override NEMUFLAGS += -b -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
+$(info $(shell dirname $(IMAGE).elf)/nemu-log.txt)
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
 CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include
 .PHONY: $(AM_HOME)/am/src/platform/nemu/trm.c
@@ -24,6 +24,7 @@ image: $(IMAGE).elf
 
 run: image
 	$(MAKE) -C $(NEMU_HOME) ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin
+    $(info "ARGS =="$(NEMUFLAGS))
 
 gdb: image
 	$(MAKE) -C $(NEMU_HOME) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin

@@ -9,7 +9,7 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
-void new_wp(char* args);
+void new_wp(char* args, word_t preval);
 void show_watchpoint();
 void free_wp(uint32_t nb);
 /* We use the `readline' library to provide more flexibility to read from stdin. */
@@ -89,24 +89,27 @@ static int cmd_w(char *args) {
   }
   bool* s = (bool*)malloc(sizeof(bool));
   *s = true;
-  expr(args, s);
+  int ans = expr(args, s);
   if(*s == true){
-    new_wp(args);
+    new_wp(args, ans);
   } else printf("Arguments is not legal\n");
   return 0;
 }
-
+// wangjizemeyongle..
+// tiaoshi buliao 
+// wo xianzai danaobutaiqingxi, yaobunixianba watchpoint gaiyixia ,xianzai dou buennegyong nenggoushibie $pc==0x8000xxxx 
+// mingtianzainongba ok
 int cmd_p(char *args) {
   if(args == NULL) {
     printf("No Arguments\n");
     return 0;
   }
-  printf("%s\n", args);
+  // printf("%s\n", args);
   bool *success = malloc(sizeof(int));
   *success = true; 
   int ans = expr(args, success);
-  if(*success == false) Log("get val of expr is Error\n");
-  else printf("Ans is %d\n", ans);
+  if(*success == false) Log("get val of expr is Error\n"); 
+  else printf("%d    0x%08x\n", ans,  ans);
   free(success);
   return 0;
 }

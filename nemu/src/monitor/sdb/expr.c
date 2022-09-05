@@ -30,7 +30,7 @@ static struct rule {
   {"&&", TK_AND},
   {"\\|\\|", TK_OR},
   {"0x[0-9,a-f]+", TK_HEXNUM},
-  {"\\$(0|ra|sp|gp|tp|t0|t1|t2|s0|s1|a0|a1|a2|a3|a4|a5|a6|a7|s2|s3|s4|s5|s6|s7|s8|s9|s10|s11|t3|t4|t5|t6)", TK_REGNAME},
+  {"\\$(0|ra|sp|gp|tp|t0|t1|t2|s0|s1|a0|a1|a2|a3|a4|a5|a6|a7|s2|s3|s4|s5|s6|s7|s8|s9|s10|s11|t3|t4|t5|t6|pc)", TK_REGNAME},
   {"[0-9]+", TK_NUM},
   {"<<", TK_LMOV},
   {">>", TK_RMOV},
@@ -81,16 +81,15 @@ static bool make_token(char *e) {
 
   nr_token = 0;
 
-  while (e[position] != '\0') {
+  while (position < strlen(e) &&  e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
-
+        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
         /* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -148,7 +147,7 @@ static bool make_token(char *e) {
                   //printf("%d\n", nr_token);
                   tokens[nr_token].type = TK_REGNAME;
                   strncpy(tokens[nr_token].str, substr_start+1, substr_len-1);  
-                  printf("%s\n", tokens[nr_token].str);
+                  // printf("%s\n", tokens[nr_token].str);
                   nr_token++;
                   break;
           case TK_AND : 
@@ -183,7 +182,7 @@ static bool make_token(char *e) {
                   tokens[nr_token].type = TK_NUM;
                   if(substr_len < 32){
                          strncpy(tokens[nr_token].str, substr_start+2, substr_len-2);  
-                         printf("%s\n", tokens[nr_token].str);
+                         // printf("%s\n", tokens[nr_token].str);
                          int ans = 0;
                          for(int i = 0; i < strlen(tokens[nr_token].str); i++) {
                           if(tokens[nr_token].str[i] <= '9')
@@ -205,7 +204,7 @@ static bool make_token(char *e) {
                   tokens[nr_token].type = TK_NUM;
                   if(substr_len < 32){
                          strncpy(tokens[nr_token].str, substr_start, substr_len);  
-                         printf("%s\n", tokens[nr_token].str);
+                         // printf("%s\n", tokens[nr_token].str);
                   } else {
                           printf("number too long\n");
                   }
@@ -218,7 +217,7 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
-      printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+      // printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
   }
@@ -245,10 +244,10 @@ static bool check_parentheses(int p, int q) {
 
 
 uint32_t Find_Oper(int p, int q) {
-  printf("Finding op in the bound %d ~~ %d\n", p, q);
+ // printf("Finding op in the bound %d ~~ %d\n", p, q);
   int cnt = 0, pi = -1, MINN = 10;
   for(int i = q; i >= p; i--) {
-    printf("%c\n", tokens[i].type);
+    // printf("%c\n", tokens[i].type);
     if(tokens[i].type == TK_RPARE) 
       cnt++;
     else if(tokens[i].type == TK_LPARE) 
@@ -305,7 +304,7 @@ uint32_t Find_Oper(int p, int q) {
  
 
 uint32_t eval(int p, int q, bool* success) {
-  printf("Eval in the %d ~ %d\n", p, q);
+  // printf("Eval in the %d ~ %d\n", p, q);
   if (p > q) {
     *success = false; 
     printf("Bad P~ Q Range In Fuc Eval\n");
@@ -313,7 +312,11 @@ uint32_t eval(int p, int q, bool* success) {
   }
   else if (p == q) {
     // printf("%s\n", tokens[p].str);
-    return atoi(tokens[p].str);
+    int tmp = atoi(tokens[p].str);
+    if(tmp == 0) {
+      return isa_reg_str2val(tokens[q].str,success);
+    }
+    return tmp;
   }
   else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
@@ -324,23 +327,23 @@ uint32_t eval(int p, int q, bool* success) {
   else {
     int op = Find_Oper(p, q);
     if(op == -1) success = false;
-    printf("OP = %d | tokens[op] type = %d\n", op, tokens[op].type);
+    //printf("OP = %d | tokens[op] type = %d\n", op, tokens[op].type);
     uint32_t val1 = 0;
     uint32_t val2 = 0;
     if(tokens[op].type == TK_NEG){
       val2 = eval(op+1, q, success);
-      printf("In The op '-' val2 == %d\n", val2);
+      // printf("In The op '-' val2 == %d\n", val2);
     } else if(tokens[op].type == TK_DEREF) {
 
     }
     else {
       val1 = eval(p, op - 1, success);
       val2 = eval(op + 1, q, success);
-      printf("In The Normal Op val1 = %u   val2 = %u\n", val1, val2);
+      // printf("In The Normal Op val1 = %u   val2 = %u\n", val1, val2);
     }
-    printf("%d   %d\n", op, tokens[op].type);
-    if(*success == 1) printf("true\n");
-    else printf("Error\n");
+    // printf("%d   %d\n", op, tokens[op].type);
+    // if(*success == 1) printf("true\n");
+    // else printf("Error\n");
     switch (tokens[op].type) {
       case TK_PLUS: return val1 + val2;
       case TK_MINUS: return val1 - val2;
@@ -353,7 +356,7 @@ uint32_t eval(int p, int q, bool* success) {
           *success = false;
           return 0;
         }
-        Log("%u %u %u",  val1, val2, val1 / val2);
+        // Log("%u %u %u",  val1, val2, val1 / val2);
         return val1 / val2;
       }
       case TK_EQ: return val1 == val2;
@@ -379,10 +382,10 @@ word_t expr(char *e, bool *success) {
   int p = 31;
   while(tokens[p].type == 0) p--;
 /* TODO: Insert codes to evaluate the expression. */
-  for(int i = 0; i <= p; i++) {
-    printf("%s, ", tokens[i].str);
-  }
-  printf("\n");
+  // for(int i = 0; i <= p; i++) {
+  //   printf("%s, ", tokens[i].str);
+  // }
+  // printf("\n");
   return eval(0, p, success);  
   return 0;
 }

@@ -27,16 +27,17 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
-WP* new_wp(char* args) {
- Assert(free_->next != NULL, "free_->next is NULL\n");
- WP* tmp = free_->next;
- free_->next = tmp->next;
- tmp->next = head->next;
- head->next = tmp;
- Log("want to copy args");
- strcpy(tmp->args, args);
- Log("args is %s", args);
- return tmp;
+WP* new_wp(char* args, word_t ans) {
+  Assert(free_->next != NULL, "free_->next is NULL\n");
+  WP* tmp = free_->next;
+  free_->next = tmp->next;
+  tmp->next = head->next;
+  head->next = tmp;
+  Log("want to copy args");
+  strcpy(tmp->args, args);
+  tmp->preval = ans;
+  Log("args is %s", args);
+  return tmp;
 }
 
 void free_wp(uint32_t nb) {
@@ -58,9 +59,12 @@ void free_wp(uint32_t nb) {
 void check_watchpiont() {
   WP* cur = head;
   while(cur->next != NULL) {
-    uint32_t newval = cmd_p(cur->args);
+    bool *flag = malloc(sizeof(int));
+    *flag = true; 
+    uint32_t newval = expr(cur->next->args, flag);
     if(newval != cur->next->preval) {
-      printf("No%d: expr- %s 's val is change from %d, %d", cur->NO, cur->args, cur->preval, newval);
+      printf("No%d: \"expr- %s\" is change from %d to %d\n", cur->next->NO, cur->next->args, cur->next->preval, newval);
+      cur->next->preval = newval;
       nemu_state.state = NEMU_STOP;
     }
     cur = cur->next;

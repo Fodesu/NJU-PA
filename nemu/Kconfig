@@ -144,6 +144,10 @@ config ITRACE_COND
   string "Only trace instructions when the condition is true"
   default "true"
 
+config MTRACE
+  depends on TRACE
+  bool "Enable instruction Memorytacer"
+  default y
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
@@ -154,7 +158,6 @@ config DIFFTEST
     Note that this will significantly reduce the performance of NEMU.
 
 config WATCHPOINT
-  depends on DIFFTEST
   bool "Enable differential watchpoint testing"
   default n
 
