@@ -149,6 +149,11 @@ config MTRACE
   bool "Enable instruction Memorytacer"
   default y
 
+config DTRACE
+  depends on TRACE
+  bool "Enable instruction Devicetacer"
+  default y
+  
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
   bool "Enable differential testing"
