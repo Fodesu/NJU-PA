@@ -228,6 +228,48 @@ def_EHelper(bltu) {
   }
 }
 
+static inline word_t transfer(word_t x) {
+  switch (x) {
+  case 0x305: 
+    return REG_MTVEC;
+    break;
+  case 0x342: 
+    return REG_MCAUSE;
+    break;
+  case 0x300:
+    return REG_MSTATUS;
+    break;
+  case 0x341:
+    return REG_MEPC;
+    break;
+  default:
+    Assert(0, "transfer error");
+    break;
+  }
+  return 0;
+}
+def_EHelper(ecall) {
+  word_t vec = isa_raise_intr(11, cpu.pc);
+  IFDEF(CONFIG_ETRACE, Log("\033[31;43mj to %x", vec));
+  rtl_j(s, vec);
+}
+
+def_EHelper(csrrw) {
+  rtl_mv(s, s0, &csr.reg[transfer(id_src2->imm)]._32);
+  rtl_mv(s, &csr.reg[transfer(id_src2->imm)]._32, dsrc1);
+  rtl_mv(s, ddest, s0); 
+}
+
+def_EHelper(csrrs) {
+  rtl_mv(s, s0, &csr.reg[transfer(id_src2->imm)]._32);
+  rtl_or(s, &csr.reg[transfer(id_src2->imm)]._32, s0, dsrc1);
+  rtl_mv(s, ddest, s0);
+}
+
+def_EHelper(mret) {
+  IFDEF(CONFIG_ETRACE, Log("\033[31;43mmret to %x", csr.reg[REG_MEPC]._32));
+  s->dnpc = csr.reg[REG_MEPC]._32;
+}
 
 // def_EHelper(lui) {
 //   rtl_li(s, ddest, id_src1->imm);
