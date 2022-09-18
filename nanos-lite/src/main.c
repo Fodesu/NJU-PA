@@ -32,6 +32,5 @@ int main() {
 #ifdef HAS_CTE
   yield();
 #endif
-  // TODO  Should not reach here
   printf("end!!!!!\n");
 }
