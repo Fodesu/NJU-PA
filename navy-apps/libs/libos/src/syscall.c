@@ -41,6 +41,11 @@
 #endif
 
 intptr_t _syscall_(intptr_t type, intptr_t a0, intptr_t a1, intptr_t a2) {
+  // "gpr1" = type;
+  // "gpr2" = a0;
+  // "gpr3" = a1;
+  // "gpr4" = a2;
+  // "ret"  = a0;
   register intptr_t _gpr1 asm (GPR1) = type;
   register intptr_t _gpr2 asm (GPR2) = a0;
   register intptr_t _gpr3 asm (GPR3) = a1;
@@ -61,12 +66,25 @@ int _open(const char *path, int flags, mode_t mode) {
 }
 
 int _write(int fd, void *buf, size_t count) {
-  _exit(SYS_write);
+  _syscall_(SYS_write, fd, (intptr_t)buf, count);
   return 0;
 }
 
+extern char end;
+void* program_break;
+
 void *_sbrk(intptr_t increment) {
-  return (void *)-1;
+  if(program_break == NULL) {
+    program_break = &end;
+  }
+  void * old_pb = program_break;
+  program_break = program_break + increment;
+  int ret = _syscall_(SYS_brk, (intptr_t)program_break, 0, 0);
+  if(ret == 0) {
+    return old_pb;
+  } else {
+    assert(0);
+  }
 }
 
 int _read(int fd, void *buf, size_t count) {

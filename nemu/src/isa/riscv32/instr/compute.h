@@ -140,11 +140,8 @@ def_EHelper(jal) {
 }
 
 def_EHelper(jalr) {
-  // rtl_li(s, ddest, s->pc + 4);
-  // rtl_sext(s, &id_src2->imm, &id_src2->imm, 2);
-  // rtl_addi(s, &s->dnpc, dsrc1, id_src2->simm);
-  // s->dnpc = s->dnpc & (~1);
   rtl_addi(s, s0, &(s->pc), 4);
+
   rtl_addi(s, s1, id_src1->preg, c_sext(id_src2->imm, 20));
   rtl_andi(s, s1, s1, -2); //(sword_t)-2 is (word_t)0xfffffffe
   rtl_j(s, *s1);
