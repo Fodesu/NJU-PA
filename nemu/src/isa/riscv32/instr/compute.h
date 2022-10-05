@@ -251,6 +251,13 @@ def_EHelper(ecall) {
   rtl_j(s, vec);
 }
 
+def_EHelper(ebreak) {
+  word_t vec = isa_raise_intr(11, cpu.pc);
+  IFDEF(CONFIG_ETRACE, Log("\033[31;43mj to %x", vec));
+  printf("in the ebreak\n");
+  rtl_j(s, vec);
+}
+
 def_EHelper(csrrw) {
   rtl_mv(s, s0, &csr.reg[transfer(id_src2->imm)]._32);
   rtl_mv(s, &csr.reg[transfer(id_src2->imm)]._32, dsrc1);

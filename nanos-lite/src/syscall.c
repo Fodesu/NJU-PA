@@ -1,7 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 #include <fs.h>
-
+#include <sys/time.h>
 extern Finfo file_table[];
 
 void sys_yield(Context *c) {
@@ -45,12 +45,37 @@ void sys_lseek(Context* c) {
   c->GPRx = fs_lseek(c->GPR2, c->GPR3, c->GPR4);
 }
 
+void sys_gettimeofday(Context* c) {
+ struct timeval* tv = (struct timeval*)c->GPR2;
+ uint64_t time = io_read(AM_TIMER_UPTIME).us;
+ tv->tv_usec = time % 1000000;
+ tv->tv_sec  = time / 1000000;
+ c->GPRx = 0;
+}
+
+void PGPR(Context *c) {
+  printf("GPR1 = %x\n", c->GPR1);
+  printf("GPR2 = %x\n", c->GPR2);
+  printf("GPR3 = %x\n", c->GPR3);
+  printf("GPR4 = %x\n", c->GPR4);
+}
+
+void PGPRS(Context *c) {
+  printf("GPR1 = %x\n", c->GPR1);
+  printf("GPR2 = %s\n", c->GPR2);
+  printf("GPR3 = %x\n", c->GPR3);
+  printf("GPR4 = %x\n", c->GPR4);
+}
+
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
-  #ifdef CONFIG_STRACE
-    Log("System call trace\n GPR1\t %s\n GPR2\t %x\n GPR3\t %p\n GPR4\t %x", file_table[c->GPR1].name, c->GPR2, c->GPR3, c->GPR4);
-  #endif
+  // #ifdef CONFIG_STRACE
+  //   if(a[0] != 2) 
+  //     PGPR(c);
+  //   else 
+  //     PGPRS(c);
+  // #endif
   switch (a[0]) {
     case SYS_yield:
       sys_yield(c);
@@ -75,6 +100,9 @@ void do_syscall(Context *c) {
       break;
     case SYS_lseek:
       sys_lseek(c);
+      break;
+    case SYS_gettimeofday:
+      sys_gettimeofday(c);
       break;
     default: panic("Unhandled syscall ID = %d", a[0]);
   }

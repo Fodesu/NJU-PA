@@ -61,6 +61,7 @@ void _exit(int status) {
 }
 
 int _open(const char *path, int flags, mode_t mode) {
+  // puts("_open was called\n");
   return _syscall_(SYS_open, (intptr_t)path, (intptr_t)flags, mode);
 }
 
@@ -98,8 +99,7 @@ off_t _lseek(int fd, off_t offset, int whence) {
 }
 
 int _gettimeofday(struct timeval *tv, struct timezone *tz) {
-  _exit(SYS_gettimeofday);
-  return 0;
+  return _syscall_(SYS_gettimeofday, (intptr_t)tv, (intptr_t)tz, 0); 
 }
 
 int _execve(const char *fname, char * const argv[], char *const envp[]) {

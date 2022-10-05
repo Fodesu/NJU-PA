@@ -3,20 +3,38 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <sys/time.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <assert.h>
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 
+typedef struct size
+{
+  int w;
+  int h;
+} Size;
+Size size;
+
 uint32_t NDL_GetTicks() {
-  return 0;
+  struct timeval* tv = malloc(sizeof(struct timeval));
+  struct timezone* tz = malloc(sizeof(struct timezone));
+  gettimeofday(tv, tz);
+  return tv->tv_usec / 1000 + tv->tv_sec * 1000;
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  return 0;
+  int fd = open("/dev/events", O_RDONLY);
+  return read(fd, buf, len); 
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
+  FILE *fp = fopen("/proc/dispinfo", "r");
+  fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &size.w, &size.h);
+  fclose(fp);
+  printf("size.w = %d, size.h = %d\n", size.w, size.h);
   if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
@@ -37,6 +55,20 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  if (w == 0 && h == 0){
+    w = size.w;
+    h = size.h;
+  }
+  printf("w = %d\n", w);
+  printf("h = %d\n", h);
+  assert(w > 0 && w <= size.w);
+  assert(h > 0 && h <= size.h);
+  printf("fbdev = %d\n", fbdev);
+  for (size_t row = 0; row < h; ++row){
+    lseek(fbdev, x + (y + row) * size.w, SEEK_SET);
+    write(fbdev, pixels + row * w,  w);
+  }
+  write(fbdev, 0, 0);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -57,6 +89,7 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+    fbdev = open("/dev/fb", O_RDWR);
   return 0;
 }
 
