@@ -69,16 +69,18 @@ static void clear_display(void) {
 
 int main(int argc, char *argv[], char *envp[]) {
   SDL_Init(0);
+  printf("SDL_Init success\n");
   screen = SDL_SetVideoMode(0, 0, 32, SDL_HWSURFACE);
-
+  printf("screen . \n");
   font = new BDF_Font(font_fname);
   logo_sf = SDL_LoadBMP("/share/pictures/projectn.bmp");
   assert(logo_sf);
   set_i_max();
 
   while (1) {
+    printf("before display\n");
     display_menu(i_max);
-
+    printf("after display\n");
     SDL_Event e;
     do {
       SDL_WaitEvent(&e);
@@ -120,7 +122,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
 static void draw_ch(BDF_Font *font, int x, int y, char ch, uint32_t fg, uint32_t bg) {
   SDL_Surface *s = BDF_CreateSurface(font, ch, fg, bg);
-  SDL_Rect dstrect = { .x = x, .y = y };
+  SDL_Rect dstrect = { .x = (int16_t)x, .y = (int16_t)y };
   SDL_BlitSurface(s, NULL, screen, &dstrect);
   SDL_FreeSurface(s);
 }
@@ -141,7 +143,9 @@ static void draw_text_row(char *s, int r) {
 
 static void display_menu(int n) {
   clear_display();
-  SDL_Rect rect = { .x = screen->w - logo_sf->w, .y = 0 };
+  SDL_Rect rect = { .x = int16_t(screen->w - logo_sf->w), .y = 0 };
+  printf("before BlitSurface\n");
+  assert(logo_sf && screen);
   SDL_BlitSurface(logo_sf, NULL, screen, &rect);
   printf("Available applications:\n");
   char buf[80];

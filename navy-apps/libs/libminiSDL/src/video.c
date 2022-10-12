@@ -3,16 +3,118 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <malloc.h>
+#include <stdio.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  
+
+  if (src->format->BitsPerPixel == 32){
+    uint32_t* src_pixels = (uint32_t*)src->pixels;
+    uint32_t* dst_pixels = (uint32_t*)dst->pixels;
+
+    int ret_w, ret_h, src_x, src_y, dst_x, dst_y;
+    if (srcrect){
+      ret_w = srcrect->w; ret_h = srcrect->h;
+      src_x = srcrect->x; src_y = srcrect->y; 
+    }else {
+      ret_w = src->w; ret_h = src->h;
+      src_x = 0; src_y = 0;
+    }
+    if (dstrect){
+      dst_x = dstrect->x, dst_y = dstrect->y;
+    }else {
+      dst_x = 0; dst_y = 0;
+    }
+    for (int i = 0; i < ret_h; ++i){
+      for (int j = 0; j < ret_w; ++j){
+      //  printf("dst_pixels = %p, row = %d, col = %d, bits = %d, dst->w = %d, dst->h = %d, src->w = %d, src->h = %d\n", dst_pixels + (dst_y + i) * dst->w + dst_x + j, i, j, src->format->BitsPerPixel, dst->w, dst->h, src->w, src->h);  
+        dst_pixels[(dst_y + i) * dst->w + dst_x + j] = src_pixels[(src_y + i) * src->w + src_x + j];
+      }
+    }
+  }else if (src->format->BitsPerPixel == 8){
+    uint8_t* src_pixels = (uint8_t*)src->pixels;
+    uint8_t* dst_pixels = (uint8_t*)dst->pixels;
+
+    int rect_w, rect_h, src_x, src_y, dst_x, dst_y;
+    if (srcrect){
+      rect_w = srcrect->w; rect_h = srcrect->h;
+      src_x = srcrect->x; src_y = srcrect->y; 
+    }else {
+      rect_w = src->w; rect_h = src->h;
+      src_x = 0; src_y = 0;
+    }
+    if (dstrect){
+      dst_x = dstrect->x, dst_y = dstrect->y;
+    }else {
+      dst_x = 0; dst_y = 0;
+    }
+    
+    for (int i = 0; i < rect_h; ++i){
+      for (int j = 0; j < rect_w; ++j){
+      //  printf("dst_pixels = %p, row = %d, col = %d, bits = %d, dst->w = %d, dst->h = %d, src->w = %d, src->h = %d\n", dst_pixels + (dst_y + i) * dst->w + dst_x + j, i, j, src->format->BitsPerPixel, dst->w, dst->h, src->w, src->h);
+        dst_pixels[(dst_y + i) * dst->w + dst_x + j] = src_pixels[(src_y + i) * src->w + src_x + j];
+      }
+    }
+  }else {
+    assert(0);
+  }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+  int32_t start_pos = 0;
+  uint32_t sf_row_num = dst->h;
+  uint32_t sf_col_num = dst->w;
+  uint32_t rec_row_num = dst->h;
+  uint32_t rec_col_num = dst->w;
+  if (dstrect != NULL) {
+    start_pos = dstrect->x + dstrect->y * dst->w;
+    rec_row_num = dstrect->h;
+    rec_col_num = dstrect->w;
+  }
+
+  if (dst->format->BitsPerPixel == 32) {
+    for (int row = 0; row < rec_row_num; ++row)
+      memset((uint32_t *)dst->pixels + start_pos + row * sf_col_num, color, rec_col_num * sizeof(uint32_t));
+  }
+  else if (dst->format->BitsPerPixel == 8) {
+    for (int row = 0; row < rec_row_num; ++row)
+      memset((uint8_t *)dst->pixels + start_pos + row * sf_col_num, color, rec_col_num * sizeof(uint8_t));
+  }
+  else {
+    printf("unsupported pixel bites %d!\n", dst->format->BitsPerPixel);
+    assert(0);
+  }
+  return;
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  if(w == 0 && h == 0) {
+    w = s->w;
+    h = s->h;
+  }
+  uint32_t len = w * h;
+  uint32_t *buf = malloc(sizeof(uint32_t) * len);
+  uint32_t start_pos = x + y * s->w;
+  uint32_t i = 0;
+  for(size_t row = 0; row < h; row++) {
+    for(size_t col = 0; col < w; col++) {
+      uint32_t  offset = col + row * s->w;
+      if(s->format->BitsPerPixel == 32) {
+        s->pixels[start_pos + offset];
+        buf[i++] = s->pixels[start_pos + offset * 4 + 3] << 24 | s->pixels[start_pos + offset * 4 + 2] << 16 | s->pixels[start_pos + offset * 4 + 1] << 8 | s->pixels[start_pos + offset * 4];
+      } else if(s->format->BitsPerPixel == 8) {
+        SDL_Color rgba_color = s->format->palette->colors[s->pixels[start_pos + offset]];
+        buf[i++] = rgba_color.a << 24 | rgba_color.r << 16 | rgba_color.g << 8 | rgba_color.b;
+      } else 
+          assert(s->format->BitsPerPixel == 32 || s->format->BitsPerPixel == 8);
+    }
+  }
+  NDL_DrawRect(buf, x, y, w, h);
+
+  free(buf);
 }
 
 // APIs below are already implemented.

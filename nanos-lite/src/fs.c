@@ -26,7 +26,7 @@ Finfo file_table[] __attribute__((used)) = {
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
   [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
   {"/dev/events", 0, 0, events_read, invalid_write}, 
-  {"/proc/dispinfo", 50, 0, dispinfo_read, invalid_write},
+  {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
   {"/dev/fb", 0, 0, invalid_read, fb_write},
 #include "files.h"
 };
@@ -42,7 +42,7 @@ void init_fs() {
 int fs_open(const char *pathname, int flags, int mode) {
   for(int i = 0; i < sizeof(file_table) / sizeof(Finfo); i++) {
       if(strcmp(pathname, file_table[i].name) == 0) {
-      // printf("find the file : %s\n", pathname);
+      printf("find the file : %s\n", pathname);
       return i;
     }
   }
@@ -87,6 +87,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
   Finfo * file = &file_table[fd];
+  assert(file);
   switch(whence) {
     case SEEK_SET:
       assert(offset <= file->size);

@@ -9,6 +9,7 @@
 #include <assert.h>
 static int evtdev = -1;
 static int fbdev = -1;
+static int dispinfo = -1;
 static int screen_w = 0, screen_h = 0;
 
 typedef struct size
@@ -26,15 +27,18 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  int fd = open("/dev/events", O_RDONLY);
-  return read(fd, buf, len); 
+  buf[0] = '\0';
+  assert(evtdev != -1);
+  return read(evtdev, buf, len); 
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
-  FILE *fp = fopen("/proc/dispinfo", "r");
-  fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &size.w, &size.h);
-  fclose(fp);
   printf("size.w = %d, size.h = %d\n", size.w, size.h);
+  printf("close success\n");
+  if(*w == 0 && *h == 0) {
+    *w = size.w;
+    *h = size.h;
+  }
   if (getenv("NWM_APP")) {
     int fbctl = 4;
     fbdev = 5;
@@ -89,9 +93,17 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
-    fbdev = open("/dev/fb", O_RDWR);
+  evtdev = open("/dev/events", 0, 0);
+  fbdev = open("/dev/fb", O_RDWR);
+  dispinfo = open("/proc/dispinfo", 0, 0);
+  FILE *fp = fopen("/proc/dispinfo", "r");
+  assert(fp);
+  fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &size.w, &size.h);
+  
   return 0;
 }
 
 void NDL_Quit() {
+  close(dispinfo);
+  close(evtdev);
 }

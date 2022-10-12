@@ -258,7 +258,7 @@ struct Init {
     sprintf(fsimg_path, "%s/fsimg", navyhome);
 
     char newpath[512];
-    get_fsimg_path(newpath, "/bin");
+    get_fsimg_path(newpath, "/share/pictures/projectn.bmp");
     setenv("PATH", newpath, 1); // overwrite the current PATH
 
     SDL_Init(0);

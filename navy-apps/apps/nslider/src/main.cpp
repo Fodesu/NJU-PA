@@ -12,7 +12,7 @@
 //   gg - first page
 
 // number of slides
-const int N = 10;
+const int N = 2;
 // slides path pattern (starts from 0)
 const char *path = "/share/slides/slides-%d.bmp";
 
@@ -24,7 +24,10 @@ void render() {
     SDL_FreeSurface(slide);
   }
   char fname[256];
+  printf("before the sprintf\n");
+
   sprintf(fname, path, cur);
+  printf("fname = %s\n", fname);
   slide = SDL_LoadBMP(fname);
   assert(slide);
   SDL_UpdateRect(slide, 0, 0, 0, 0);
@@ -38,6 +41,7 @@ void prev(int rep) {
 }
 
 void next(int rep) {
+  printf("next %d page\n", rep);
   if (rep == 0) rep = 1;
   cur += rep;
   if (cur >= N) cur = N - 1;
