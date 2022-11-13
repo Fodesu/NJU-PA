@@ -125,6 +125,7 @@ $(APP): $(OBJS) libs
 
 ### Rule (archive): objects (`*.o`) -> `ARCHIVE.a` (ar)
 $(ARCHIVE): $(OBJS) libs
+	$(info target = $@)
 	@echo + AR "->" $(shell realpath $@ --relative-to .)
 	@ar rcsT $@ $(LINKAGE)
 
@@ -165,10 +166,11 @@ $(CLEAN_ALL):
 .PHONY: clean-all $(CLEAN_ALL)
 
 ### Build fsimg and ramdisk for Nanos-lite
-APPS = nslider menu nterm bird
+APPS = nslider menu nterm bird am-kernels
 TESTS = dummy hello file-test timer-test event-test bmp-test
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))
+	$(info $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS)))
 	-for t in $^; do $(MAKE) -s -C $(NAVY_HOME)/$$t install; done
 
 RAMDISK = build/ramdisk.img

@@ -72,7 +72,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     lseek(fbdev, x + (y + row) * size.w, SEEK_SET);
     write(fbdev, pixels + row * w,  w);
   }
-  write(fbdev, 0, 0);
+  // write(fbdev, 0, 0);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -96,10 +96,13 @@ int NDL_Init(uint32_t flags) {
   evtdev = open("/dev/events", 0, 0);
   fbdev = open("/dev/fb", O_RDWR);
   dispinfo = open("/proc/dispinfo", 0, 0);
-  FILE *fp = fopen("/proc/dispinfo", "r");
-  assert(fp);
-  fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &size.w, &size.h);
-  
+  // FILE *fp = fopen("/proc/dispinfo", "r");
+  // assert(fp);
+  // fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &size.w, &size.h);
+  char buf[64];
+  read(dispinfo,buf,64);
+  sscanf(buf, "WIDTH:%d\nHEIGHT:%d\n",  &size.w, &size.h);
+  printf("get screen width=%d, height=%d\n", size.w, size.h);
   return 0;
 }
 
